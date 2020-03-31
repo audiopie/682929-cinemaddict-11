@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Marat Khaybullin](https://up.htmlacademy.ru/ecmascript/11/user/682929).
-* Наставник: `Неизвестно`.
+* Наставник: `Александр Гулевских`.
 
 ---
 
