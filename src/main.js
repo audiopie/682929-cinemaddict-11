@@ -1,11 +1,10 @@
-/* eslint-disable new-cap */
 'use strict';
 
 const CARD_COUNT = 5;
 const EXTRA_CARD_COUNT = 2;
 const EXTRA_TITLES = [`Top rated`, `Most commented`];
 
-const UserProfileTemplate = () => {
+const userProfileTemplate = () => {
   return (
     `<section class="header__profile profile">
     <p class="profile__rating">Movie Buff</p>
@@ -14,7 +13,7 @@ const UserProfileTemplate = () => {
   );
 };
 
-const MainNavigationMenuTemplate = () => {
+const mainNavigationMenuTemplate = () => {
   return (
     `<nav class="main-navigation">
     <div class="main-navigation__items">
@@ -28,7 +27,7 @@ const MainNavigationMenuTemplate = () => {
   );
 };
 
-const SortBarTemplate = () => {
+const sortBarTemplate = () => {
   return (
     ` <ul class="sort">
     <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
@@ -38,7 +37,7 @@ const SortBarTemplate = () => {
   );
 };
 
-const FilmsListTemplate = () => {
+const filmsListTemplate = () => {
   return (
     `<section class="films">
     <section class="films-list">
@@ -47,13 +46,13 @@ const FilmsListTemplate = () => {
   );
 };
 
-const FilmsListContainerTemplate = () => {
+const filmsListContainerTemplate = () => {
   return (
     `<div class="films-list__container"></div>`
   );
 };
 
-const FilmCardTemplate = () => {
+const filmCardTemplate = () => {
   return (
     `<article class="film-card">
       <h3 class="film-card__title">The Dance of Life</h3>
@@ -75,13 +74,13 @@ const FilmCardTemplate = () => {
   );
 };
 
-const ShowMoreButtonTemplate = () => {
+const showMoreButtonTemplate = () => {
   return (
     `<button class="films-list__show-more">Show more</button>`
   );
 };
 
-const FilmsListExtraTemplate = () => {
+const filmsListExtraTemplate = () => {
   return (
     `<section class="films-list--extra">
     <h2 class="films-list__title"></h2>
@@ -89,7 +88,7 @@ const FilmsListExtraTemplate = () => {
   );
 };
 
-const FooterStatisticsTemplate = () => {
+const footerStatisticsTemplate = () => {
   return (
     `<p>130 291 movies inside</p>`
   );
@@ -106,44 +105,44 @@ const siteFooterElement = document.querySelector(`.footer`);
 const footerStatistickElement = siteFooterElement.querySelector(`.footer__statistics`);
 
 
-render(siteHeaderElement, UserProfileTemplate(), `beforeend`);
-render(siteMainElement, MainNavigationMenuTemplate(), `beforeend`);
-render(siteMainElement, SortBarTemplate(), `beforeend`);
-render(siteMainElement, FilmsListTemplate(), `beforeend`);
+render(siteHeaderElement, userProfileTemplate(), `beforeend`);
+render(siteMainElement, mainNavigationMenuTemplate(), `beforeend`);
+render(siteMainElement, sortBarTemplate(), `beforeend`);
+render(siteMainElement, filmsListTemplate(), `beforeend`);
 
 const siteFilmsElement = siteMainElement.querySelector(`.films`);
 const filmsListsElement = siteFilmsElement.querySelector(`.films-list`);
 
-render(filmsListsElement, FilmsListContainerTemplate(), `beforeend`);
+render(filmsListsElement, filmsListContainerTemplate(), `beforeend`);
 
 const filmsListsContainerElement = filmsListsElement.querySelector(`.films-list__container`);
 
 for (let i = 0; i < CARD_COUNT; i++) {
-  render(filmsListsContainerElement, FilmCardTemplate(), `beforeend`);
+  render(filmsListsContainerElement, filmCardTemplate(), `beforeend`);
 }
 
-render(filmsListsElement, ShowMoreButtonTemplate(), `beforeend`);
+render(filmsListsElement, showMoreButtonTemplate(), `beforeend`);
 
 
 for (let i = 0; i < EXTRA_CARD_COUNT; i++) {
-  render(siteFilmsElement, FilmsListExtraTemplate(), `beforeend`);
+  render(siteFilmsElement, filmsListExtraTemplate(), `beforeend`);
 }
 
 const filmsListExtra = siteFilmsElement.querySelectorAll(`.films-list--extra`);
 
 const renderExtraCard = (element) => {
   for (let i = 0; i < EXTRA_CARD_COUNT; i++) {
-    render(element, FilmCardTemplate(), `beforeend`);
+    render(element, filmCardTemplate(), `beforeend`);
   }
 };
 
 for (let i = 0; i < filmsListExtra.length; i++) {
   filmsListExtra[i].querySelector(`.films-list__title`).textContent = EXTRA_TITLES[i];
-  render(filmsListExtra[i], FilmsListContainerTemplate(), `beforeend`);
+  render(filmsListExtra[i], filmsListContainerTemplate(), `beforeend`);
   const extraContainerElement = filmsListExtra[i].querySelector(`.films-list__container`);
   renderExtraCard(extraContainerElement);
 }
 
-render(footerStatistickElement, FooterStatisticsTemplate(), `beforeend`);
+render(footerStatistickElement, footerStatisticsTemplate(), `beforeend`);
 
 
