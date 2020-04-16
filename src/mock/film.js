@@ -10,7 +10,7 @@ const generateFilm = () => {
     monthPublicationDate: MONTHS[getRandomDate.getReleaseMonth()],
     datePublication: getRandomDate.getReleaseDate(),
     duration: getRandomDate.getDurationTime(),
-    genre: generateGenres(),
+    genre: GENRES[getItemFromArray(GENRES)],
     img: POSTERS[getItemFromArray(POSTERS)],
     description: DESCRIPTIONS[getItemFromArray(DESCRIPTIONS)],
     comments: getRandom(CARD_INFO.MIN_COMMENTS, CARD_INFO.MAX_COMMENTS),
@@ -19,15 +19,6 @@ const generateFilm = () => {
     isWatched: Math.random() > 0.5,
     isFavorite: Math.random() > 0.5,
   };
-};
-
-const generateGenres = () => {
-  const genres = GENRES.slice();
-  const countGenres = Math.ceil(Math.random() * genres.length);
-  if (countGenres) {
-    return genres.slice(1, countGenres);
-  }
-  return GENRES[0];
 };
 
 

@@ -1,4 +1,4 @@
-export const createComments = (comments) => {
+const createComments = (comments) => {
   const commentMarkup = comments.map((it) => createCommentsTemplate(it.author, it.text, it.emoji, it.dayCommented)).join(`\n`);
   return (
     `${commentMarkup}`
@@ -22,4 +22,28 @@ const createCommentsTemplate = (author, text, emoji, dayCommented) => {
   </li>`
   );
 };
+
+export default class Comments {
+  constructor(comments) {
+    this._comments = comments;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createComments(this._comments);
+  }
+
+  getElement() {
+    if (!this._element) {
+      return this.getTemplate();
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
 

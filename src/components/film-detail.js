@@ -1,4 +1,6 @@
-export const filmDetailTemplate = (film, comments, count, details) => {
+import {createElement} from "../utils";
+
+const filmDetailTemplate = (film, comments, count, details) => {
   const {title, rating, filmPublicationDate, duration, genre, img, description, monthPublicationDate, datePublication} = film;
   const {actors, director, writers, country, filmDetailsAge} = details;
   return (
@@ -53,7 +55,7 @@ export const filmDetailTemplate = (film, comments, count, details) => {
                 <td class="film-details__cell">${country}</td>
               </tr>
               <tr class="film-details__row">
-                <td class="film-details__term">${genre.length > 1 ? `Genres` : `Genre`}</td>
+                <td class="film-details__term">${genre.length <= 1 ? `Genres` : `Genre`}</td>
                 <td class="film-details__cell">
                   <span class="film-details__genre">${genre}</span>
 
@@ -81,7 +83,9 @@ export const filmDetailTemplate = (film, comments, count, details) => {
       <div class="form-details__bottom-container">
         <section class="film-details__comments-wrap">
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${count}</span></h3>
+        <ul class="film-details__comments-list">
           ${comments}
+          </ul>
           </div>
         </section>
       </div>
@@ -91,3 +95,29 @@ export const filmDetailTemplate = (film, comments, count, details) => {
   );
 };
 
+export default class FilmDetail {
+  constructor(film, comments, count, details) {
+    this._film = film;
+    this._comments = comments;
+    this._count = count;
+    this._details = details;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return filmDetailTemplate(this._film, this._comments, this._count, this._details);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
