@@ -10,8 +10,8 @@ import ShowMoreButtonComponent from "./components/show-more-button.js";
 import FilmsListExtraComponent from "./components/films-extra.js";
 import FooterStatisticsComponent from "./components/footer-statistics.js";
 
-import {generateFilters, generateProfile} from './utils.js';
-import {generateCountObjects, generateFilm, generateComment, generateFilmDetail} from './mock/film.js';
+import {generateFilters, generateProfile} from "./utils.js";
+import {generateCountObjects, generateFilm, generateComment, generateFilmDetail} from "./mock/film.js";
 import {render, RenderPosition} from "./utils.js";
 
 
