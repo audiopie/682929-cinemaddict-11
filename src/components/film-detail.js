@@ -1,6 +1,6 @@
 import {createElement} from "../utils";
 
-const filmDetailTemplate = (film, comments, count, details) => {
+const filmDetailTemplate = (film, count, details) => {
   const {title, rating, filmPublicationDate, duration, genre, img, description, monthPublicationDate, datePublication} = film;
   const {actors, director, writers, country, filmDetailsAge} = details;
   return (
@@ -84,7 +84,6 @@ const filmDetailTemplate = (film, comments, count, details) => {
         <section class="film-details__comments-wrap">
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${count}</span></h3>
         <ul class="film-details__comments-list">
-          ${comments}
           </ul>
           </div>
         </section>
@@ -96,9 +95,8 @@ const filmDetailTemplate = (film, comments, count, details) => {
 };
 
 export default class FilmDetail {
-  constructor(film, comments, count, details) {
+  constructor(film, count, details) {
     this._film = film;
-    this._comments = comments;
     this._count = count;
     this._details = details;
 
@@ -106,7 +104,7 @@ export default class FilmDetail {
   }
 
   getTemplate() {
-    return filmDetailTemplate(this._film, this._comments, this._count, this._details);
+    return filmDetailTemplate(this._film, this._count, this._details);
   }
 
   getElement() {

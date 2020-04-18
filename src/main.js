@@ -77,13 +77,14 @@ const renderCard = (film, container) => {
     }
 
     const comments = generateCountObjects(commentsCount, generateComment);
-    const mockComments = new CommentsComponent(comments).getElement();
+    const mockComments = comments.map((comment) => new CommentsComponent(comment.author, comment.text, comment.emoji, comment.dayCommented).getElement());
     const newComment = new NewCommentComponent().getElement();
 
     for (const className of popupTargets) {
       if (className === event.target.className) {
-        siteFooterElement.appendChild(new FilmDetailComponent(film, mockComments, commentsCount, filmDetail).getElement());
+        siteFooterElement.appendChild(new FilmDetailComponent(film, commentsCount, filmDetail).getElement());
 
+        mockComments.forEach((comment) => siteFooterElement.querySelector(`.film-details__comments-list`).appendChild(comment));
         siteFooterElement.querySelector(`.film-details__comments-wrap`).appendChild(newComment);
       }
     }
