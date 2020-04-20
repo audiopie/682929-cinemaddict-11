@@ -1,7 +1,6 @@
 import PageController from "./controllers/card.js";
 import UserProfileComponent from "./components/profile.js";
 import MainNavigation from "./components/navigation.js";
-import SortComponent from "./components/sort.js";
 import FilmListComponent from "./components/films-lists.js";
 import FooterStatisticsComponent from "./components/footer-statistics.js";
 
@@ -22,11 +21,9 @@ const films = generateCountObjects(CARD_COUNT, generateFilm);
 
 render(siteHeaderElement, new UserProfileComponent(generateProfile()), RenderPosition.BEFOREEND);
 render(siteMainElement, new MainNavigation(filters), RenderPosition.BEFOREEND);
-render(siteMainElement, new SortComponent(), RenderPosition.BEFOREEND);
-render(footerStatistickElement, new FooterStatisticsComponent(), RenderPosition.BEFOREEND);
-
 
 const filmListComponent = new FilmListComponent();
 const pageController = new PageController(filmListComponent);
 render(siteMainElement, filmListComponent, RenderPosition.BEFOREEND);
 pageController.render(films);
+render(footerStatistickElement, new FooterStatisticsComponent(), RenderPosition.BEFOREEND);
