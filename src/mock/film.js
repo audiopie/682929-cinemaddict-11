@@ -5,7 +5,7 @@ import {FILMS_TITLES, GENRES, POSTERS, CARD_INFO, DESCRIPTIONS, MONTHS, COMMENTE
 const generateFilm = () => {
   return {
     title: FILMS_TITLES[getItemFromArray(FILMS_TITLES)],
-    rating: getRandomRating(CARD_INFO.MIN_RATING, CARD_INFO.MAX_RATING),
+    rating: +getRandomRating(CARD_INFO.MIN_RATING, CARD_INFO.MAX_RATING),
     filmPublicationDate: getRandomDate.getReleaseYear(),
     monthPublicationDate: MONTHS[getRandomDate.getReleaseMonth()],
     datePublication: getRandomDate.getReleaseDate(),

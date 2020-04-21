@@ -1,9 +1,4 @@
-const createComments = (comments) => {
-  const commentMarkup = comments.map((it) => createCommentsTemplate(it.author, it.text, it.emoji, it.dayCommented)).join(`\n`);
-  return (
-    `${commentMarkup}`
-  );
-};
+import AbstractComponent from "./abstract-component.js";
 
 const createCommentsTemplate = (author, text, emoji, dayCommented) => {
   return (
@@ -23,27 +18,18 @@ const createCommentsTemplate = (author, text, emoji, dayCommented) => {
   );
 };
 
-export default class Comments {
-  constructor(comments) {
-    this._comments = comments;
-
-    this._element = null;
+export default class Comments extends AbstractComponent {
+  constructor(commentAuthor, commentText, commentEmoji, commentDayCommented) {
+    super();
+    this._commentAuthor = commentAuthor;
+    this._commentText = commentText;
+    this._commentEmoji = commentEmoji;
+    this._commentDayCommented = commentDayCommented;
   }
 
   getTemplate() {
-    return createComments(this._comments);
+    return createCommentsTemplate(this._commentAuthor, this._commentText, this._commentEmoji, this._commentDayCommented);
   }
 
-  getElement() {
-    if (!this._element) {
-      return this.getTemplate();
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }
 
