@@ -1,7 +1,7 @@
-import AbstractComponent from "./abstract-component.js";
+import AbstractSmartComponent from "./abstract-smart-component.js";
 
 const filmDetailTemplate = (film, count, details) => {
-  const {title, rating, filmPublicationDate, duration, genre, img, description, monthPublicationDate, datePublication} = film;
+  const {title, rating, filmPublicationDate, duration, genre, img, description, monthPublicationDate, datePublication, isWatchList, isWatched, isFavorite} = film;
   const {actors, director, writers, country, filmDetailsAge} = details;
   return (
     `<section class="film-details">
@@ -69,13 +69,13 @@ const filmDetailTemplate = (film, count, details) => {
         </div>
   
         <section class="film-details__controls">
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isWatchList ? `checked` : ``}>
           <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
   
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isWatched ? `checked` : ``}>
           <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
   
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFavorite ? `checked` : ``}>
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
         </section>
       </div>
@@ -94,16 +94,53 @@ const filmDetailTemplate = (film, count, details) => {
   );
 };
 
-export default class FilmDetail extends AbstractComponent {
+export default class FilmDetail extends AbstractSmartComponent {
   constructor(film, count, details) {
     super();
     this._film = film;
     this._count = count;
     this._details = details;
+
+    this._watchListButtonClickHandler = null;
+    this._watchedButtonClickHandler = null;
+    this._favoriteButtonClickHandler = null;
+  }
+
+  recoveryListeners() {
+    this.setWatchListButtonClickHandler(this._watchListButtonClickHandler);
+    this.setWatchedButtonClickHandler(this._watchedButtonClickHandler);
+    this.setFavoriteButtonClickHandler(this._favoriteButtonClickHandler);
+
+  }
+
+  rerender() {
+    super.rerender();
   }
 
   getTemplate() {
     return filmDetailTemplate(this._film, this._count, this._details);
+  }
+
+  setWatchListButtonClickHandler(handler) {
+    this.getElement().querySelector(`#watchlist`)
+    .addEventListener(`click`, handler);
+
+    this._watchListButtonClickHandler = handler;
+
+  }
+
+  setWatchedButtonClickHandler(handler) {
+    this.getElement().querySelector(`#watched`)
+    .addEventListener(`click`, handler);
+
+    this._watchedButtonClickHandler = handler;
+  }
+
+  setFavoriteButtonClickHandler(handler) {
+    this.getElement().querySelector(`#favorite`)
+    .addEventListener(`click`, handler);
+
+    this._favoriteButtonClickHandler = handler;
   }
 }
 

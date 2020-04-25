@@ -15,7 +15,7 @@ const generateFilm = () => {
     description: DESCRIPTIONS[getItemFromArray(DESCRIPTIONS)],
     comments: getRandom(CARD_INFO.MIN_COMMENTS, CARD_INFO.MAX_COMMENTS),
     maxTitleLength: CARD_INFO.MAX_TITLE_LENGTH,
-    isWatchlist: Math.random() > 0.5,
+    isWatchList: Math.random() > 0.5,
     isWatched: Math.random() > 0.5,
     isFavorite: Math.random() > 0.5,
   };
