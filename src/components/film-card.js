@@ -52,7 +52,7 @@ export default class Card extends AbstractSmartComponent {
   recoveryListeners() {
     this.setWatchListButtonClickHandler(this._setWatchListHandler);
     this.setWatchedButtonClickHandler(this._setWatchedHandler);
-    this.seFavoriteButtonClickHandler(this._setFavorite);
+    this.setFavoriteButtonClickHandler(this._setFavorite);
   }
 
   rerender() {
@@ -85,7 +85,7 @@ export default class Card extends AbstractSmartComponent {
     this._setWatchedHandler = handler;
   }
 
-  seFavoriteButtonClickHandler(handler) {
+  setFavoriteButtonClickHandler(handler) {
     this.getElement().querySelector(`.film-card__controls-item--favorite`)
     .addEventListener(`click`, handler);
     this._setFavorite = handler;

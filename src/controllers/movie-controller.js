@@ -1,9 +1,7 @@
 import CardComponent from "../components/film-card.js";
 import FilmDetailComponent from "../components/film-detail.js";
-import NewCommentComponent from "../components/create-new-comment.js";
-import CommentsComponent from "../components/film-card-comments";
 
-import {generateCountObjects, generateComment, generateFilmDetail} from "../mock/film.js";
+import {generateFilmDetail} from "../mock/film.js";
 import {render, RenderPosition} from "../utils/render.js";
 
 const bodyElement = document.querySelector(`body`);
@@ -26,15 +24,8 @@ export default class MovieController {
     const filmDetails = generateFilmDetail();
 
     this._filmDetailComponent = new FilmDetailComponent(film, commentsCount, filmDetails);
-    const comments = generateCountObjects(commentsCount, generateComment);
-    this._commentsComponent = comments.map((comment) => new CommentsComponent(comment.author, comment.text, comment.emoji, comment.dayCommented).getElement());
-    this._newCommentComponent = new NewCommentComponent().getElement();
 
     bodyElement.appendChild(this._filmDetailComponent.getElement());
-
-    this._commentsComponent.forEach((comment) => bodyElement.querySelector(`.film-details__comments-list`).appendChild(comment));
-
-    bodyElement.querySelector(`.film-details__comments-wrap`).appendChild(this._newCommentComponent);
 
     this._filmDetailComponent.onCloseButtonHandler(() => {
       bodyElement.removeChild(this._filmDetailComponent.getElement());
@@ -61,7 +52,7 @@ export default class MovieController {
       this._onDataChange(this, film, Object.assign({}, film, {isWatched: !film.isWatched}));
     });
 
-    this._cardComponent.seFavoriteButtonClickHandler((event) => {
+    this._cardComponent.setFavoriteButtonClickHandler((event) => {
       event.preventDefault();
       this._onDataChange(this, film, Object.assign({}, film, {isFavorite: !film.isFavorite}));
     });

@@ -94,7 +94,6 @@ export default class PageController {
 
     this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
 
-
     this._renderShowMoreButton();
 
     renderExtraCard(this._container.getElement(), this._allFilms, this._showMoreButton);
