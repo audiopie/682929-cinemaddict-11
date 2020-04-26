@@ -100,17 +100,19 @@ export default class FilmDetail extends AbstractSmartComponent {
     this._film = film;
     this._count = count;
     this._details = details;
+    this._closeButtonHandler = null;
 
-    this._watchListButtonClickHandler = null;
-    this._watchedButtonClickHandler = null;
-    this._favoriteButtonClickHandler = null;
+    this._subscribeOnEvents();
+
+    this._isWatchList = film.isWatchList;
+    this._isWatched = film.isWatched;
+    this._isFavorite = film.isFavorite;
+
   }
 
   recoveryListeners() {
     this.setWatchListButtonClickHandler(this._watchListButtonClickHandler);
-    this.setWatchedButtonClickHandler(this._watchedButtonClickHandler);
-    this.setFavoriteButtonClickHandler(this._favoriteButtonClickHandler);
-
+    this._subscribeOnEvents();
   }
 
   rerender() {
@@ -121,26 +123,26 @@ export default class FilmDetail extends AbstractSmartComponent {
     return filmDetailTemplate(this._film, this._count, this._details);
   }
 
-  setWatchListButtonClickHandler(handler) {
-    this.getElement().querySelector(`#watchlist`)
-    .addEventListener(`click`, handler);
+  onCloseButtonHandler(handler) {
+    this.getElement().querySelector(`.film-details__close-btn`).
+    addEventListener(`click`, handler);
 
-    this._watchListButtonClickHandler = handler;
-
+    this._closeButtonHandler = handler;
   }
 
-  setWatchedButtonClickHandler(handler) {
-    this.getElement().querySelector(`#watched`)
-    .addEventListener(`click`, handler);
+  _subscribeOnEvents() {
+    const element = this.getElement();
 
-    this._watchedButtonClickHandler = handler;
-  }
+    element.querySelector(`#watchlist`).addEventListener(`click`, () => {
+      this._isWatch = !this._isWatchList;
+    });
 
-  setFavoriteButtonClickHandler(handler) {
-    this.getElement().querySelector(`#favorite`)
-    .addEventListener(`click`, handler);
+    element.querySelector(`#watched`).addEventListener(`click`, () => {
+      this._isWatched = !this._isWatched;
+    });
 
-    this._favoriteButtonClickHandler = handler;
+    element.querySelector(`#favorite`).addEventListener(`click`, () => {
+      this._isFavorite = !this._isFavorite;
+    });
   }
 }
-
