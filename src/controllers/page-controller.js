@@ -40,7 +40,7 @@ const getSortedFilms = (allFilms, sortType, from, to) => {
   return sortedFilms.slice(from, to);
 };
 
-const renderExtraCard = (container, allFilms, button) => {
+const renderExtraCard = (container, allFilms) => {
   const top = allFilms.slice().sort((a, b) => b.rating - a.rating);
   const mostComents = allFilms.slice().sort((a, b) => b.comments - a.comments);
   top.slice(0, 2).forEach(() => {
@@ -63,7 +63,7 @@ const renderExtraCard = (container, allFilms, button) => {
     new MovieController(extraContainer).render(it);
   });
   const filmListElement = container.querySelector(`.films .films-list`);
-  render(filmListElement, button, RenderPosition.BEFOREEND);
+  render(filmListElement, RenderPosition.BEFOREEND);
 };
 
 
@@ -74,6 +74,7 @@ export default class PageController {
     this._allfilms = [];
     this._showedFilmControllers = [];
     this._showingFilmsCount = SHOWING_CARD_COUNT_ON_START;
+    this._showingCardCount = null;
     this._showMoreButton = new ShowMoreButtonComponent();
     this._sortComponent = new SortComponent();
 
@@ -96,7 +97,7 @@ export default class PageController {
 
     this._renderShowMoreButton();
 
-    renderExtraCard(this._container.getElement(), this._allFilms, this._showMoreButton);
+    renderExtraCard(this._container.getElement(), this._allFilms);
   }
 
   _renderShowMoreButton() {

@@ -55,10 +55,6 @@ export default class Card extends AbstractSmartComponent {
     this.setFavoriteButtonClickHandler(this._setFavorite);
   }
 
-  rerender() {
-    super.rerender();
-  }
-
   onPosterClickHandler(handler) {
     this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, handler);
 

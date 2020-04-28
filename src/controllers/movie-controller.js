@@ -1,8 +1,7 @@
 import CardComponent from "../components/film-card.js";
 import FilmDetailComponent from "../components/film-detail.js";
 
-import {generateFilmDetail} from "../mock/film.js";
-import {render, RenderPosition} from "../utils/render.js";
+import {render, replace, RenderPosition} from "../utils/render.js";
 
 const bodyElement = document.querySelector(`body`);
 
@@ -14,31 +13,23 @@ export default class MovieController {
 
     this._cardComponent = null;
     this._filmDetailComponent = null;
-    this._newCommentComponent = null;
-    this._commentsComponent = null;
-
   }
 
-  _openPopup(film) {
-    const commentsCount = +film.comments;
-    const filmDetails = generateFilmDetail();
-
-    this._filmDetailComponent = new FilmDetailComponent(film, commentsCount, filmDetails);
-
+  _openPopup() {
     bodyElement.appendChild(this._filmDetailComponent.getElement());
-
-    this._filmDetailComponent.onCloseButtonHandler(() => {
-      bodyElement.removeChild(this._filmDetailComponent.getElement());
-    });
-
   }
 
   render(film) {
     const oldFilmComponent = this._cardComponent;
-    if (this._cardComponent !== null && oldFilmComponent === this._cardComponent) {
-      this._cardComponent.rerender();
+    const oldDetailComponent = this._filmDetailComponent;
+
+    this._cardComponent = new CardComponent(film);
+    this._filmDetailComponent = new FilmDetailComponent(film);
+
+    if (oldFilmComponent && oldDetailComponent) {
+      replace(this._cardComponent, oldFilmComponent);
+      replace(this._filmDetailComponent, oldDetailComponent);
     } else {
-      this._cardComponent = new CardComponent(film);
       render(this._container, this._cardComponent, RenderPosition.BEFOREEND);
     }
 
@@ -57,16 +48,35 @@ export default class MovieController {
       this._onDataChange(this, film, Object.assign({}, film, {isFavorite: !film.isFavorite}));
     });
 
+    this._filmDetailComponent.setWatchListButtonClickHandlerDetail((event) => {
+      event.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {isWatchList: !film.isWatchList}));
+    });
+
+    this._filmDetailComponent.setWatchedButtonClickHandlerDetail((event) => {
+      event.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {isWatched: !film.isWatched}));
+    });
+
+    this._filmDetailComponent.setFavoriteButtonClickHandlerDetail((event) => {
+      event.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {isFavorite: !film.isFavorite}));
+    });
+
+    this._filmDetailComponent.onCloseButtonHandler(() => {
+      bodyElement.removeChild(this._filmDetailComponent.getElement());
+    });
+
     this._cardComponent.onPosterClickHandler(() => {
-      this._openPopup(film);
+      this._openPopup();
     });
 
     this._cardComponent.onTitleClickHandler(() => {
-      this._openPopup(film);
+      this._openPopup();
     });
 
     this._cardComponent.onCommentsClickHandler(() => {
-      this._openPopup(film);
+      this._openPopup();
     });
 
   }

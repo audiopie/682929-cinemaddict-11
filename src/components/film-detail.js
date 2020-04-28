@@ -1,5 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
-import {generateCountObjects, generateComment} from "../mock/film.js";
+import {generateCountObjects, generateFilmDetail, generateComment} from "../mock/film.js";
 
 const createCommentsTemplate = (author, text, emoji, dayCommented) => {
   return (
@@ -20,11 +20,11 @@ const createCommentsTemplate = (author, text, emoji, dayCommented) => {
 };
 
 
-const filmDetailTemplate = (film, count, details, emoji) => {
+const filmDetailTemplate = (film, emoji) => {
   const {title, rating, filmPublicationDate, duration, genre, img, description, monthPublicationDate, datePublication, isWatchList, isWatched, isFavorite} = film;
-  const {actors, director, writers, country, filmDetailsAge} = details;
+  const {actors, director, writers, country, filmDetailsAge} = generateFilmDetail();
   const emojiMarkup = emoji ? `<img src ="${emoji}" alt="" width="55" height="55">` : ``;
-  const comments = generateCountObjects(count, generateComment);
+  const comments = generateCountObjects(film.comments, generateComment);
   const commentsMarkup = comments.map((comment) => createCommentsTemplate(comment.author, comment.text, comment.emoji, comment.dayCommented)).join(`\n`);
   return (
     `<section class="film-details">
@@ -105,7 +105,7 @@ const filmDetailTemplate = (film, count, details, emoji) => {
   
       <div class="form-details__bottom-container">
         <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${count}</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${+film.comments}</span></h3>
         <ul class="film-details__comments-list">
           ${commentsMarkup}
 
@@ -151,29 +151,29 @@ const filmDetailTemplate = (film, count, details, emoji) => {
 };
 
 export default class FilmDetail extends AbstractSmartComponent {
-  constructor(film, count, details) {
+  constructor(film) {
     super();
     this._film = film;
-    this._count = count;
-    this._details = details;
     this._closeButtonHandler = null;
+    this._setWatchListDetailHandler = null;
+    this._setWatchedDetailHandler = null;
+    this._setFavoriteDetailHandler = null;
     this._emoji = null;
 
     this._subscribeOnEvents();
-
-    this._isWatchList = film.isWatchList;
-    this._isWatched = film.isWatched;
-    this._isFavorite = film.isFavorite;
 
   }
 
   recoveryListeners() {
     this.onCloseButtonHandler(this._closeButtonHandler);
+    this.setWatchListButtonClickHandlerDetail(this._setWatchListDetailHandler);
+    this.setWatchedButtonClickHandlerDetail(this._setWatchedDetailHandler);
+    this.setFavoriteButtonClickHandlerDetail(this._setFavoriteDetailHandler);
     this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return filmDetailTemplate(this._film, this._count, this._details, this._emoji);
+    return filmDetailTemplate(this._film, this._emoji);
   }
 
   onCloseButtonHandler(handler) {
@@ -183,20 +183,28 @@ export default class FilmDetail extends AbstractSmartComponent {
     this._closeButtonHandler = handler;
   }
 
+  setWatchListButtonClickHandlerDetail(handler) {
+    this.getElement().querySelector(`#watchlist`)
+    .addEventListener(`click`, handler);
+    this._setWatchListDetailHandler = handler;
+  }
+
+  setWatchedButtonClickHandlerDetail(handler) {
+    this.getElement().querySelector(`#watched`)
+    .addEventListener(`click`, handler);
+
+    this._setWatchedDetailHandler = handler;
+  }
+
+  setFavoriteButtonClickHandlerDetail(handler) {
+    this.getElement().querySelector(`#favorite`)
+    .addEventListener(`click`, handler);
+
+    this._setFavoriteDetailHandler = handler;
+  }
+
   _subscribeOnEvents() {
     const element = this.getElement();
-
-    element.querySelector(`#watchlist`).addEventListener(`click`, () => {
-      this._isWatch = !this._isWatchList;
-    });
-
-    element.querySelector(`#watched`).addEventListener(`click`, () => {
-      this._isWatched = !this._isWatched;
-    });
-
-    element.querySelector(`#favorite`).addEventListener(`click`, () => {
-      this._isFavorite = !this._isFavorite;
-    });
 
     element.querySelectorAll(`.film-details__emoji-label`).forEach((it) => {
       it.addEventListener(`click`, (event) => {
