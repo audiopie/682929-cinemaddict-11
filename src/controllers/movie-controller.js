@@ -7,17 +7,31 @@ const bodyElement = document.querySelector(`body`);
 
 
 export default class MovieController {
-  constructor(container, onDataChange) {
+  constructor(container, onDataChange, onViewChange) {
     this._container = container;
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
 
     this._cardComponent = null;
     this._filmDetailComponent = null;
+    this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
   _openPopup() {
+    this._onViewChange();
     bodyElement.appendChild(this._filmDetailComponent.getElement());
   }
+
+  setDefaultView() {
+    this._filmDetailComponent.getElement().remove();
+  }
+
+  _onEscKeyDown(evt) {
+    if (evt.key === `Escape` || evt.key === `Ecs`) {
+      this.setDefaultView();
+    }
+  }
+
 
   render(film) {
     const oldFilmComponent = this._cardComponent;
@@ -64,19 +78,24 @@ export default class MovieController {
     });
 
     this._filmDetailComponent.onCloseButtonHandler(() => {
-      bodyElement.removeChild(this._filmDetailComponent.getElement());
+      this.setDefaultView();
+      document.removeEventListener(`keydown`, this._onEscKeyDown);
     });
+
 
     this._cardComponent.onPosterClickHandler(() => {
       this._openPopup();
+      document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
     this._cardComponent.onTitleClickHandler(() => {
       this._openPopup();
+      document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
     this._cardComponent.onCommentsClickHandler(() => {
       this._openPopup();
+      document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
   }
