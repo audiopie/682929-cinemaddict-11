@@ -1,4 +1,4 @@
-import PageController from "./controllers/card.js";
+import PageController from "./controllers/page-controller";
 import UserProfileComponent from "./components/profile.js";
 import MainNavigation from "./components/navigation.js";
 import FilmListComponent from "./components/films-lists.js";
