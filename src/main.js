@@ -1,6 +1,6 @@
 import PageController from "./controllers/page-controller";
 import UserProfileComponent from "./components/profile.js";
-import MainNavigation from "./components/navigation.js";
+import FilterComponent from "./components/filter.js";
 import MoviesModel from "./models/movie.js";
 import FilmListComponent from "./components/films-lists.js";
 import FooterStatisticsComponent from "./components/footer-statistics.js";
@@ -23,7 +23,7 @@ const moviesModel = new MoviesModel();
 moviesModel.setMovies(films);
 
 render(siteHeaderElement, new UserProfileComponent(generateProfile()), RenderPosition.BEFOREEND);
-render(siteMainElement, new MainNavigation(filters), RenderPosition.BEFOREEND);
+render(siteMainElement, new FilterComponent(filters), RenderPosition.BEFOREEND);
 
 const filmListComponent = new FilmListComponent();
 const pageController = new PageController(filmListComponent, moviesModel);

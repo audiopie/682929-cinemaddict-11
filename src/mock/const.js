@@ -71,11 +71,12 @@ const MONTHS = [
   `December`
 ];
 
-const FILTER_NAMES = [
-  `Watchlist`,
-  `History`,
-  `Favorites`,
-];
+const FilterTypes = {
+  ALL: `All movies`,
+  WATCHLIST: `Watchlist`,
+  HISTORY: `History`,
+  FAVORITES: `Favorites`,
+};
 
 
 const DIRECTION = [
@@ -149,7 +150,7 @@ export {
   DESCRIPTIONS,
   CARD_INFO,
   MONTHS,
-  FILTER_NAMES,
+  FilterTypes,
   COMMENT_AUTHOR,
   COMMENT_EMOJI,
   COMMENT_TEXT,
