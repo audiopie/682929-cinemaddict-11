@@ -27,5 +27,13 @@ export default class Filter extends AbstractComponent {
   getTemplate() {
     return filterTemplate(this._filters);
   }
+
+  setFilterChangeHandler(handler) {
+    this.getElement().addEventListener(`change`, (evt) => {
+      evt.preventDefault();
+      const filterName = evt.target;
+      handler(filterName);
+    });
+  }
 }
 
