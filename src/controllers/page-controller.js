@@ -72,7 +72,6 @@ export default class PageController {
     this._container = container;
     this._moviesModel = moviesModel;
 
-    this._allfilms = [];
     this._showedFilmControllers = [];
     this._showingFilmsCount = SHOWING_CARD_COUNT_ON_START;
     this._showingCardCount = null;
@@ -81,25 +80,33 @@ export default class PageController {
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
+    this._onFilterChange = this._onFilterChange.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
 
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
+    this._moviesModel.setFilterChangeHandler(this._onFilterChange);
   }
 
   render() {
     const movies = this._moviesModel.getMovies();
 
-    const mainContainer = this._container.getElement().querySelector(`.films-list__container`);
-
     render(this._container.getElement(), this._sortComponent, RenderPosition.AFTERBEGIN);
-
-    const newFilms = renderFilms(movies.slice(0, this._showingFilmsCount), mainContainer, this._onDataChange, this._onViewChange);
-
-    this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
-
+    this._renderMovies(movies.slice(0, this._showingFilmsCount));
     this._renderShowMoreButton();
 
     renderExtraCard(this._container.getElement(), movies);
+  }
+
+  _removeMovies() {
+    this._showedFilmControllers.forEach((filmController) => filmController.destroy());
+    this._showedFilmControllers = [];
+  }
+
+  _renderMovies(movies) {
+    const mainContainer = this._container.getElement().querySelector(`.films-list__container`);
+    const newFilms = renderFilms(movies, mainContainer, this._onDataChange, this._onViewChange);
+    this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
+    this._showingCardCount = this._showedFilmControllers.length;
   }
 
   _renderShowMoreButton() {
@@ -129,6 +136,12 @@ export default class PageController {
     });
   }
 
+  _updateMovies(count) {
+    this._removeMovies();
+    this._renderMovies(this._moviesModel.getMovies().slice(0, count));
+    this._renderShowMoreButton();
+  }
+
   _onDataChange(filmController, oldData, newData) {
     const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
     if (isSuccess) {
@@ -152,6 +165,10 @@ export default class PageController {
     this._showedFilmControllers = newFilms;
     remove(this._showMoreButton);
     this._renderShowMoreButton();
+  }
+
+  _onFilterChange() {
+    this._updateMovies(SHOWING_CARD_COUNT_ON_START);
   }
 }
 

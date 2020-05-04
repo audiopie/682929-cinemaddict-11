@@ -1,7 +1,7 @@
 import {FilterTypes} from "../mock/const.js";
 
 export const getWatchlistMovies = (movies) => {
-  return movies.filter((movie) => movie.isWatchlist);
+  return movies.filter((movie) => movie.isWatchList);
 };
 
 export const getHistoryMovies = (movies) => {

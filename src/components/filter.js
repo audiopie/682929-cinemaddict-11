@@ -1,5 +1,7 @@
 import AbstractComponent from "./abstract-component.js";
 
+const ANCHOR_PREFIX = `#`;
+
 const filterTemplate = (filters) => {
   const markup = filters.map((it, i) => createFilterItems(it.name, it.count, i === 0)).join(`\n`);
   return (
@@ -29,10 +31,11 @@ export default class Filter extends AbstractComponent {
   }
 
   setFilterChangeHandler(handler) {
-    this.getElement().addEventListener(`change`, (evt) => {
-      evt.preventDefault();
-      const filterName = evt.target;
-      handler(filterName);
+    this.getElement().addEventListener(`click`, (evt) => {
+      event.preventDefault();
+      const anc = evt.target.getAttribute(`href`);
+      const filter = anc.substring(ANCHOR_PREFIX.length);
+      handler(filter);
     });
   }
 }

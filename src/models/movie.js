@@ -1,12 +1,26 @@
+import {getMoviesByFilter} from "../utils/filter.js";
+import {FilterTypes} from "../mock/const.js";
+
+
 export default class Movies {
   constructor() {
     this._movies = [];
-
+    this._activeFilterType = FilterTypes.ALL;
     this._dataChangeHandlers = [];
+    this._filterChangeHandler = [];
   }
 
   getMovies() {
+    return getMoviesByFilter(this._movies, this._activeFilterType);
+  }
+
+  getAllMovies() {
     return this._movies;
+  }
+
+  setFilter(filterType) {
+    this._activeFilterType = filterType;
+    this._callHandlers(this._filterChangeHandler);
   }
 
   setMovies(movies) {
@@ -26,6 +40,10 @@ export default class Movies {
     this._callHandlers(this._dataChangeHandlers);
 
     return true;
+  }
+
+  setFilterChangeHandler(handler) {
+    this._filterChangeHandler.push(handler);
   }
 
   setDataChangeHandler(handler) {

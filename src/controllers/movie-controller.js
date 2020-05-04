@@ -1,7 +1,7 @@
 import CardComponent from "../components/film-card.js";
 import FilmDetailComponent from "../components/film-detail.js";
 
-import {render, replace, RenderPosition} from "../utils/render.js";
+import {render, replace, remove, RenderPosition} from "../utils/render.js";
 
 const bodyElement = document.querySelector(`body`);
 
@@ -30,6 +30,11 @@ export default class MovieController {
     if (evt.key === `Escape` || evt.key === `Ecs`) {
       this.setDefaultView();
     }
+  }
+
+  destroy() {
+    remove(this._cardComponent);
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
 
