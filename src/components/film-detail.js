@@ -151,13 +151,15 @@ const filmDetailTemplate = (film, emoji) => {
 };
 
 export default class FilmDetail extends AbstractSmartComponent {
-  constructor(film) {
+  constructor(film, onDataChange) {
     super();
     this._film = film;
+    this._onDataChange = onDataChange;
     this._closeButtonHandler = null;
     this._setWatchListDetailHandler = null;
     this._setWatchedDetailHandler = null;
     this._setFavoriteDetailHandler = null;
+    this._deleteCommentButtonHandler = null;
     this._emoji = null;
 
     this._subscribeOnEvents();
@@ -211,6 +213,16 @@ export default class FilmDetail extends AbstractSmartComponent {
         this._emoji = event.target.src;
         this.rerender();
       });
+    });
+
+    element.querySelectorAll(`.film-details__comment`).forEach((it) => {
+      it.addEventListener(`click`, (event) => {
+        event.preventDefault();
+        if (event.target.className === `film-details__comment-delete`) {
+          element.querySelector(`.film-details__comment`).remove();
+        }
+      });
+
     });
   }
 }

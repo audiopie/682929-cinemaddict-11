@@ -42,6 +42,20 @@ export default class Movies {
     return true;
   }
 
+  removeMovie(id) {
+    const index = this._movies.findIndex((it) => it.id === id);
+
+    if (index === -1) {
+      return false;
+    }
+
+    this._movies = [].concat(this._movies.slice(0, index), this._movies.slice(index + 1));
+
+    this._callHandlers(this._dataChangeHandlers);
+
+    return true;
+  }
+
   setFilterChangeHandler(handler) {
     this._filterChangeHandler.push(handler);
   }
