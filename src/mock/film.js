@@ -45,7 +45,8 @@ const generateComment = () => {
     author: COMMENT_AUTHOR[getItemFromArray(COMMENT_AUTHOR)],
     text: COMMENT_TEXT[getItemFromArray(COMMENT_TEXT)],
     emoji: COMMENT_EMOJI[getItemFromArray(COMMENT_EMOJI)],
-    dayCommented: COMMENTED_DAY[getItemFromArray(COMMENTED_DAY)]
+    dayCommented: COMMENTED_DAY[getItemFromArray(COMMENTED_DAY)],
+    id: new Date().getSeconds() + Math.random(),
   };
 };
 

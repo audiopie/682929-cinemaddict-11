@@ -1,7 +1,7 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
-import {generateCountObjects, generateFilmDetail, generateComment} from "../mock/film.js";
+import {generateFilmDetail} from "../mock/film.js";
 
-const createCommentsTemplate = (author, text, emoji, dayCommented) => {
+const createCommentsTemplate = (author, text, emoji, dayCommented, commentId) => {
   return (
     `<li class="film-details__comment">
     <span class="film-details__comment-emoji">
@@ -12,7 +12,7 @@ const createCommentsTemplate = (author, text, emoji, dayCommented) => {
       <p class="film-details__comment-info">
         <span class="film-details__comment-author">${author}</span>
         <span class="film-details__comment-day">${dayCommented}</span>
-        <button class="film-details__comment-delete">Delete</button>
+        <button class="film-details__comment-delete" data-comment-id="${commentId}">Delete</button>
       </p>
     </div>
   </li>`
@@ -20,12 +20,11 @@ const createCommentsTemplate = (author, text, emoji, dayCommented) => {
 };
 
 
-const filmDetailTemplate = (film, emoji) => {
+const filmDetailTemplate = (film, emoji, comments) => {
   const {title, rating, filmPublicationDate, duration, genre, img, description, monthPublicationDate, datePublication, isWatchList, isWatched, isFavorite} = film;
   const {actors, director, writers, country, filmDetailsAge} = generateFilmDetail();
   const emojiMarkup = emoji ? `<img src ="${emoji}" alt="" width="55" height="55">` : ``;
-  const comments = generateCountObjects(film.comments, generateComment);
-  const commentsMarkup = comments.map((comment) => createCommentsTemplate(comment.author, comment.text, comment.emoji, comment.dayCommented)).join(`\n`);
+  const commentsMarkup = comments.map((comment) => createCommentsTemplate(comment.author, comment.text, comment.emoji, comment.dayCommented, comment.id)).join(`\n`);
   return (
     `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
@@ -151,10 +150,10 @@ const filmDetailTemplate = (film, emoji) => {
 };
 
 export default class FilmDetail extends AbstractSmartComponent {
-  constructor(film, onDataChange) {
+  constructor(film, comments) {
     super();
     this._film = film;
-    this._onDataChange = onDataChange;
+    this._comments = comments;
     this._closeButtonHandler = null;
     this._setWatchListDetailHandler = null;
     this._setWatchedDetailHandler = null;
@@ -171,11 +170,12 @@ export default class FilmDetail extends AbstractSmartComponent {
     this.setWatchListButtonClickHandlerDetail(this._setWatchListDetailHandler);
     this.setWatchedButtonClickHandlerDetail(this._setWatchedDetailHandler);
     this.setFavoriteButtonClickHandlerDetail(this._setFavoriteDetailHandler);
+    this._deleteCommentButtonHandler(this._deleteCommentButtonHandler);
     this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return filmDetailTemplate(this._film, this._emoji);
+    return filmDetailTemplate(this._film, this._emoji, this._comments);
   }
 
   onCloseButtonHandler(handler) {
@@ -205,6 +205,18 @@ export default class FilmDetail extends AbstractSmartComponent {
     this._setFavoriteDetailHandler = handler;
   }
 
+  deleteCommentButtonHandler(handler) {
+    this.getElement().querySelectorAll(`.film-details__comment-delete`).forEach((it) => {
+      it.addEventListener(`click`, (event) => {
+        event.preventDefault();
+        const currentID = it.getAttribute(`data-comment-id`);
+        handler(+currentID);
+      });
+      this._deleteCommentButtonHandler = handler;
+    });
+  }
+
+
   _subscribeOnEvents() {
     const element = this.getElement();
 
@@ -213,16 +225,6 @@ export default class FilmDetail extends AbstractSmartComponent {
         this._emoji = event.target.src;
         this.rerender();
       });
-    });
-
-    element.querySelectorAll(`.film-details__comment`).forEach((it) => {
-      it.addEventListener(`click`, (event) => {
-        event.preventDefault();
-        if (event.target.className === `film-details__comment-delete`) {
-          element.querySelector(`.film-details__comment`).remove();
-        }
-      });
-
     });
   }
 }

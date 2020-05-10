@@ -1,7 +1,9 @@
 import CardComponent from "../components/film-card.js";
 import FilmDetailComponent from "../components/film-detail.js";
+import CommentsModel from "../models/comments.js";
 
 import {render, replace, remove, RenderPosition} from "../utils/render.js";
+import {generateCountObjects, generateComment} from "../mock/film.js";
 
 const bodyElement = document.querySelector(`body`);
 
@@ -11,7 +13,7 @@ export default class MovieController {
     this._container = container;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
-
+    this._commentsModel = new CommentsModel();
     this._cardComponent = null;
     this._filmDetailComponent = null;
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
@@ -43,7 +45,10 @@ export default class MovieController {
     const oldDetailComponent = this._filmDetailComponent;
 
     this._cardComponent = new CardComponent(film);
-    this._filmDetailComponent = new FilmDetailComponent(film);
+    this._comments = generateCountObjects(film.comments, generateComment);
+    this._commentsModel.setComments(this._comments);
+    this._filmDetailComponent = new FilmDetailComponent(film, this._commentsModel.getComments());
+
 
     if (oldFilmComponent && oldDetailComponent) {
       replace(this._cardComponent, oldFilmComponent);
@@ -82,6 +87,11 @@ export default class MovieController {
       this._onDataChange(this, film, Object.assign({}, film, {isFavorite: !film.isFavorite}));
     });
 
+    this._filmDetailComponent.deleteCommentButtonHandler((commentId) => {
+      const currentArray = this._commentsModel.removeComment(commentId);
+      this._onDataChange(this, film, Object.assign({}, film, {comments: currentArray.length}));
+    });
+
     this._filmDetailComponent.onCloseButtonHandler(() => {
       this.setDefaultView();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
@@ -104,5 +114,5 @@ export default class MovieController {
     });
 
   }
-
 }
+
