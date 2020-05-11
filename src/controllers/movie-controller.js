@@ -92,6 +92,17 @@ export default class MovieController {
       this._onDataChange(this, film, Object.assign({}, film, {comments: currentArray.length}));
     });
 
+    this._filmDetailComponent.setCommentHandler((event) => {
+      if (event.keyCode === 13 && event.ctrlKey) {
+        const form = this._filmDetailComponent.getElement().querySelector(`.film-details__inner`);
+        const formData = new FormData(form);
+        const comment = formData.get(`comment`);
+        const newComment = this._filmDetailComponent.getNewComment(comment);
+        const currentArray = this._commentsModel.addComment(newComment);
+        this._onDataChange(this, film, Object.assign({}, film, {comments: currentArray.length}));
+      }
+    });
+
     this._filmDetailComponent.onCloseButtonHandler(() => {
       this.setDefaultView();
       document.removeEventListener(`keydown`, this._onEscKeyDown);

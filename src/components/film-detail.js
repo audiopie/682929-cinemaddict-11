@@ -159,6 +159,8 @@ export default class FilmDetail extends AbstractSmartComponent {
     this._setWatchedDetailHandler = null;
     this._setFavoriteDetailHandler = null;
     this._deleteCommentButtonHandler = null;
+    this._setCommentHandler = null;
+    this._getNewComment = null;
     this._emoji = null;
 
     this._subscribeOnEvents();
@@ -170,7 +172,8 @@ export default class FilmDetail extends AbstractSmartComponent {
     this.setWatchListButtonClickHandlerDetail(this._setWatchListDetailHandler);
     this.setWatchedButtonClickHandlerDetail(this._setWatchedDetailHandler);
     this.setFavoriteButtonClickHandlerDetail(this._setFavoriteDetailHandler);
-    this._deleteCommentButtonHandler(this._deleteCommentButtonHandler);
+    this.deleteCommentButtonHandler(this._deleteCommentButtonHandler);
+    this.setCommentHandler(this._setCommentHandler);
     this._subscribeOnEvents();
   }
 
@@ -214,6 +217,22 @@ export default class FilmDetail extends AbstractSmartComponent {
       });
       this._deleteCommentButtonHandler = handler;
     });
+  }
+
+  setCommentHandler(handler) {
+    this.getElement().querySelector(`.film-details__comment-input`)
+    .addEventListener(`keydown`, handler);
+    this._setCommentHandler = handler;
+  }
+
+  getNewComment(newComment) {
+    return {
+      author: `Some`,
+      text: newComment,
+      emoji: this._emoji,
+      dayCommented: new Date(),
+      id: new Date().getSeconds() + Math.random(),
+    };
   }
 
 
