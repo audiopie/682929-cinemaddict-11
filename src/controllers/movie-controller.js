@@ -1,22 +1,22 @@
 import CardComponent from "../components/film-card.js";
 import FilmDetailComponent from "../components/film-detail.js";
-import CommentsModel from "../models/comments.js";
+
 
 import {render, replace, remove, RenderPosition} from "../utils/render.js";
-import {generateCountObjects, generateComment} from "../mock/film.js";
 
 const bodyElement = document.querySelector(`body`);
 
 
 export default class MovieController {
-  constructor(container, onDataChange, onViewChange) {
+  constructor(container, onDataChange, onViewChange, commentsModel) {
     this._container = container;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
-    this._commentsModel = new CommentsModel();
+    this._commentsModel = commentsModel;
     this._cardComponent = null;
     this._filmDetailComponent = null;
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
+    this._resetForm = this._resetForm.bind(this);
   }
 
   _openPopup() {
@@ -30,8 +30,14 @@ export default class MovieController {
 
   _onEscKeyDown(evt) {
     if (evt.key === `Escape` || evt.key === `Ecs`) {
+      this._resetForm();
       this.setDefaultView();
     }
+  }
+
+  _resetForm() {
+    this._filmDetailComponent.getElement().querySelector(`.film-details__inner`).reset();
+    this._filmDetailComponent.getElement().querySelector(`.film-details__add-emoji-label`).innerHTML = ``;
   }
 
   destroy() {
@@ -45,10 +51,7 @@ export default class MovieController {
     const oldDetailComponent = this._filmDetailComponent;
 
     this._cardComponent = new CardComponent(film);
-    this._comments = generateCountObjects(film.comments, generateComment);
-    this._commentsModel.setComments(this._comments);
-    this._filmDetailComponent = new FilmDetailComponent(film, this._commentsModel.getComments());
-
+    this._filmDetailComponent = new FilmDetailComponent(film);
 
     if (oldFilmComponent && oldDetailComponent) {
       replace(this._cardComponent, oldFilmComponent);
@@ -88,8 +91,15 @@ export default class MovieController {
     });
 
     this._filmDetailComponent.deleteCommentButtonHandler((commentId) => {
-      const currentArray = this._commentsModel.removeComment(commentId);
-      this._onDataChange(this, film, Object.assign({}, film, {comments: currentArray.length}));
+      this._commentsModel.removeComment(commentId);
+
+      const index = film.popupComments.findIndex((it) => it.id === commentId);
+      if (index === -1) {
+        return false;
+      }
+
+      film.popupComments = [].concat(film.popupComments.slice(0, index), film.popupComments.slice(index + 1));
+      return this._onDataChange(this, film, Object.assign({}, film, {popupComments: film.popupComments, comments: film.popupComments.length}));
     });
 
     this._filmDetailComponent.setCommentHandler((event) => {
@@ -98,12 +108,14 @@ export default class MovieController {
         const formData = new FormData(form);
         const comment = formData.get(`comment`);
         const newComment = this._filmDetailComponent.getNewComment(comment);
-        const currentArray = this._commentsModel.addComment(newComment);
-        this._onDataChange(this, film, Object.assign({}, film, {comments: currentArray.length}));
+        this._commentsModel.addComment(newComment);
+        film.popupComments = [].concat(newComment, film.popupComments);
+        this._onDataChange(this, film, Object.assign({}, film, {popupComments: film.popupComments, comments: film.popupComments.length}));
       }
     });
 
     this._filmDetailComponent.onCloseButtonHandler(() => {
+      this._resetForm();
       this.setDefaultView();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     });

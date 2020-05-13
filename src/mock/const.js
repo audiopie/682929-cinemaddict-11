@@ -121,12 +121,19 @@ const COMMENT_AUTHOR = [
   `John Doe`,
 ];
 
-const COMMENT_EMOJI = [
+const EMOJI = [
   `angry.png`,
   `puke.png`,
   `sleeping.png`,
   `smile.png`
 ];
+
+const COMMENT_EMOJI = {
+  angry: `angry.png`,
+  puke: `puke.png`,
+  sleeping: `sleeping.png`,
+  smile: `smile.png`,
+};
 
 const COMMENT_TEXT = [
   `Interesting setting and a good cast`,
@@ -153,6 +160,7 @@ export {
   FilterTypes,
   COMMENT_AUTHOR,
   COMMENT_EMOJI,
+  EMOJI,
   COMMENT_TEXT,
   COMMENTED_DAY,
   PROFILE_RATING,

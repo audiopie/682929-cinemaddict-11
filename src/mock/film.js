@@ -1,5 +1,5 @@
 import {getItemFromArray, getRandomRating, getRandom, getRandomDate} from '../utils.js';
-import {FILMS_TITLES, GENRES, POSTERS, CARD_INFO, DESCRIPTIONS, MONTHS, COMMENTED_DAY, COMMENT_EMOJI, COMMENT_AUTHOR, COMMENT_TEXT, DIRECTION, ACTORS, WRITERS, COUNTRY, ageRate} from "./const.js";
+import {FILMS_TITLES, GENRES, POSTERS, CARD_INFO, DESCRIPTIONS, MONTHS, COMMENTED_DAY, EMOJI, COMMENT_AUTHOR, COMMENT_TEXT, DIRECTION, ACTORS, WRITERS, COUNTRY, ageRate} from "./const.js";
 
 
 const generateFilm = () => {
@@ -44,7 +44,7 @@ const generateComment = () => {
   return {
     author: COMMENT_AUTHOR[getItemFromArray(COMMENT_AUTHOR)],
     text: COMMENT_TEXT[getItemFromArray(COMMENT_TEXT)],
-    emoji: COMMENT_EMOJI[getItemFromArray(COMMENT_EMOJI)],
+    emoji: EMOJI[getItemFromArray(EMOJI)],
     dayCommented: COMMENTED_DAY[getItemFromArray(COMMENTED_DAY)],
     id: new Date().getSeconds() + Math.random(),
   };

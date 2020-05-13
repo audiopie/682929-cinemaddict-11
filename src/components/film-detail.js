@@ -1,5 +1,7 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
 import {generateFilmDetail} from "../mock/film.js";
+import {COMMENT_EMOJI} from "../mock/const";
+
 
 const createCommentsTemplate = (author, text, emoji, dayCommented, commentId) => {
   return (
@@ -23,7 +25,7 @@ const createCommentsTemplate = (author, text, emoji, dayCommented, commentId) =>
 const filmDetailTemplate = (film, emoji, comments) => {
   const {title, rating, filmPublicationDate, duration, genre, img, description, monthPublicationDate, datePublication, isWatchList, isWatched, isFavorite} = film;
   const {actors, director, writers, country, filmDetailsAge} = generateFilmDetail();
-  const emojiMarkup = emoji ? `<img src ="${emoji}" alt="" width="55" height="55">` : ``;
+  const emojiMarkup = emoji ? `<img src ="./images/emoji/${emoji}" alt="" width="55" height="55">` : ``;
   const commentsMarkup = comments.map((comment) => createCommentsTemplate(comment.author, comment.text, comment.emoji, comment.dayCommented, comment.id)).join(`\n`);
   return (
     `<section class="film-details">
@@ -104,7 +106,7 @@ const filmDetailTemplate = (film, emoji, comments) => {
   
       <div class="form-details__bottom-container">
         <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${+film.comments}</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${film.popupComments.length}</span></h3>
         <ul class="film-details__comments-list">
           ${commentsMarkup}
 
@@ -150,10 +152,10 @@ const filmDetailTemplate = (film, emoji, comments) => {
 };
 
 export default class FilmDetail extends AbstractSmartComponent {
-  constructor(film, comments) {
+  constructor(film) {
     super();
     this._film = film;
-    this._comments = comments;
+    this._comments = film.popupComments;
     this._closeButtonHandler = null;
     this._setWatchListDetailHandler = null;
     this._setWatchedDetailHandler = null;
@@ -230,7 +232,7 @@ export default class FilmDetail extends AbstractSmartComponent {
       author: `Some`,
       text: newComment,
       emoji: this._emoji,
-      dayCommented: new Date(),
+      dayCommented: `today`,
       id: new Date().getSeconds() + Math.random(),
     };
   }
@@ -239,11 +241,11 @@ export default class FilmDetail extends AbstractSmartComponent {
   _subscribeOnEvents() {
     const element = this.getElement();
 
-    element.querySelectorAll(`.film-details__emoji-label`).forEach((it) => {
-      it.addEventListener(`click`, (event) => {
-        this._emoji = event.target.src;
+    element.querySelector(`.film-details__emoji-list`).addEventListener(`click`, (event) => {
+      if (event.target.value in COMMENT_EMOJI) {
+        this._emoji = COMMENT_EMOJI[event.target.value];
         this.rerender();
-      });
+      }
     });
   }
 }
