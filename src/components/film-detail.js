@@ -1,5 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
-import {generateFilmDetail} from "../mock/film.js";
+// import {generateFilmDetail} from "../mock/film.js";
 import {COMMENT_EMOJI} from "../mock/const";
 
 
@@ -22,11 +22,10 @@ const createCommentsTemplate = (author, text, emoji, dayCommented, commentId) =>
 };
 
 
-const filmDetailTemplate = (film, emoji, comments) => {
-  const {title, rating, filmPublicationDate, duration, genre, img, description, monthPublicationDate, datePublication, isWatchList, isWatched, isFavorite} = film;
-  const {actors, director, writers, country, filmDetailsAge} = generateFilmDetail();
+const filmDetailTemplate = (film, emoji) => {
+  const {title, writers, rating, alternativeTitle, runtime, releaseCountry, actors, ageRating, dataRelease, director, genre, poster, description, isWatchList, isWatched, isFavorite} = film;
   const emojiMarkup = emoji ? `<img src ="./images/emoji/${emoji}" alt="" width="55" height="55">` : ``;
-  const commentsMarkup = comments.map((comment) => createCommentsTemplate(comment.author, comment.text, comment.emoji, comment.dayCommented, comment.id)).join(`\n`);
+  const commentsMarkup = film.comments.map((comment) => createCommentsTemplate(comment.author, comment.text, comment.emoji, comment.dayCommented, comment.id)).join(`\n`);
   return (
     `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
@@ -36,16 +35,16 @@ const filmDetailTemplate = (film, emoji, comments) => {
         </div>
         <div class="film-details__info-wrap">
           <div class="film-details__poster">
-            <img class="film-details__poster-img" src="./images/posters/${img}" alt="">
+            <img class="film-details__poster-img" src="./${poster}" alt="">
   
-            <p class="film-details__age">${filmDetailsAge}</p>
+            <p class="film-details__age">${ageRating}</p>
           </div>
   
           <div class="film-details__info">
             <div class="film-details__info-head">
               <div class="film-details__title-wrap">
                 <h3 class="film-details__title">${title}</h3>
-                <p class="film-details__title-original">Original: ${title}</p>
+                <p class="film-details__title-original">Original: ${alternativeTitle}</p>
               </div>
   
               <div class="film-details__rating">
@@ -68,15 +67,15 @@ const filmDetailTemplate = (film, emoji, comments) => {
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Release Date</td>
-                <td class="film-details__cell">${datePublication} ${monthPublicationDate} ${filmPublicationDate}</td>
+                <td class="film-details__cell">${dataRelease}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Runtime</td>
-                <td class="film-details__cell">${duration}</td>
+                <td class="film-details__cell">${runtime}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Country</td>
-                <td class="film-details__cell">${country}</td>
+                <td class="film-details__cell">${releaseCountry}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">${genre.length <= 1 ? `Genres` : `Genre`}</td>
