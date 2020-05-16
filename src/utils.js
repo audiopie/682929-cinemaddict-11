@@ -1,4 +1,4 @@
-import {FILTER_NAMES, MONTHS, PROFILE_RATING} from "./mock/const.js";
+import {MONTHS, PROFILE_RATING} from "./mock/const.js";
 
 
 export const getRandom = (min, max) => {
@@ -31,6 +31,8 @@ export const getRandomDate = {
     return `${durationHour}h ${durationTime}m`;
   },
 };
+
+const FILTER_NAMES = [`All movies`, `Watchlist`, `History`, `Favorites`];
 
 
 export const generateFilters = () => {

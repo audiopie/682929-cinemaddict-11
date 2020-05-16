@@ -71,11 +71,12 @@ const MONTHS = [
   `December`
 ];
 
-const FILTER_NAMES = [
-  `Watchlist`,
-  `History`,
-  `Favorites`,
-];
+const FilterTypes = {
+  ALL: `All movies`,
+  WATCHLIST: `Watchlist`,
+  HISTORY: `History`,
+  FAVORITES: `Favorites`,
+};
 
 
 const DIRECTION = [
@@ -120,12 +121,19 @@ const COMMENT_AUTHOR = [
   `John Doe`,
 ];
 
-const COMMENT_EMOJI = [
+const EMOJI = [
   `angry.png`,
   `puke.png`,
   `sleeping.png`,
   `smile.png`
 ];
+
+const COMMENT_EMOJI = {
+  angry: `angry.png`,
+  puke: `puke.png`,
+  sleeping: `sleeping.png`,
+  smile: `smile.png`,
+};
 
 const COMMENT_TEXT = [
   `Interesting setting and a good cast`,
@@ -149,9 +157,10 @@ export {
   DESCRIPTIONS,
   CARD_INFO,
   MONTHS,
-  FILTER_NAMES,
+  FilterTypes,
   COMMENT_AUTHOR,
   COMMENT_EMOJI,
+  EMOJI,
   COMMENT_TEXT,
   COMMENTED_DAY,
   PROFILE_RATING,
