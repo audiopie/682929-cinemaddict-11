@@ -3,8 +3,6 @@ import ShowMoreButtonComponent from "../components/show-more-button.js";
 import FilmsListExtraComponent from "../components/films-extra.js";
 import MovieController from "./movie-controller.js";
 import CommentsModel from "../models/comments.js";
-import {generateCountObjects, generateComment} from "../mock/film.js";
-
 
 import {render, remove, RenderPosition} from "../utils/render.js";
 
@@ -25,10 +23,8 @@ const renderFilms = (films, container, onDataChange, onViewChange, commentsModel
 };
 
 const renderComments = (films, commentsModel) => {
-  films.map((film) => {
-    const comment = generateCountObjects(film.comments, generateComment);
-    film.popupComments = comment;
-    commentsModel.setComment(comment);
+  films.forEach((film) => {
+    commentsModel.setComment(film.comments);
   });
   return commentsModel;
 };

@@ -14,7 +14,7 @@ const generateFilm = () => {
     genre: GENRES[getItemFromArray(GENRES)],
     img: POSTERS[getItemFromArray(POSTERS)],
     description: DESCRIPTIONS[getItemFromArray(DESCRIPTIONS)],
-    comments: getRandom(CARD_INFO.MIN_COMMENTS, CARD_INFO.MAX_COMMENTS),
+    comments: generateCountObjects(getRandom(CARD_INFO.MIN_COMMENTS, CARD_INFO.MAX_COMMENTS), generateComment),
     maxTitleLength: CARD_INFO.MAX_TITLE_LENGTH,
     isWatchList: Math.random() > 0.5,
     isWatched: Math.random() > 0.5,

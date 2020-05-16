@@ -92,14 +92,7 @@ export default class MovieController {
 
     this._filmDetailComponent.deleteCommentButtonHandler((commentId) => {
       this._commentsModel.removeComment(commentId);
-
-      const index = film.popupComments.findIndex((it) => it.id === commentId);
-      if (index === -1) {
-        return false;
-      }
-
-      film.popupComments = [].concat(film.popupComments.slice(0, index), film.popupComments.slice(index + 1));
-      return this._onDataChange(this, film, Object.assign({}, film, {popupComments: film.popupComments, comments: film.popupComments.length}));
+      // return this._onDataChange(this, film, Object.assign({}, film, {}));
     });
 
     this._filmDetailComponent.setCommentHandler((event) => {
@@ -109,8 +102,7 @@ export default class MovieController {
         const comment = formData.get(`comment`);
         const newComment = this._filmDetailComponent.getNewComment(comment);
         this._commentsModel.addComment(newComment);
-        film.popupComments = [].concat(newComment, film.popupComments);
-        this._onDataChange(this, film, Object.assign({}, film, {popupComments: film.popupComments, comments: film.popupComments.length}));
+        this._onDataChange(this, film, Object.assign({}, film, {}));
       }
     });
 
