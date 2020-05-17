@@ -9,6 +9,15 @@ export default class Comments {
     return this._comments;
   }
 
+  getComment(id) {
+    const index = this._comments.findIndex((it) => it.id === id);
+    if (index === -1) {
+      return false;
+    }
+    return this._comments[index];
+  }
+
+
   setComment(comment) {
     this._comments = [].concat(comment, this._comments);
     this._callHandlers(this._dataChangeHandlers);

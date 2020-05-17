@@ -1,15 +1,18 @@
+import CommentApi from "../api-comments.js";
 import SortComponent, {SortType} from "../components/sort.js";
 import ShowMoreButtonComponent from "../components/show-more-button.js";
-import FilmsListExtraComponent from "../components/films-extra.js";
+// import FilmsListExtraComponent from "../components/films-extra.js";
 import MovieController from "./movie-controller.js";
 import CommentsModel from "../models/comments.js";
 
 import {render, remove, RenderPosition} from "../utils/render.js";
 
+const AUTHORIZATION = `Basic dxkl29whjdy7zwa=`;
+
 const SHOWING_CARD_COUNT_ON_START = 5;
 const SHOWING_CARD_COUNT_BY_BUTTON = 5;
-const EXTRA_TITLES = [`Top rated`, `Most commented`];
-
+// const EXTRA_TITLES = [`Top rated`, `Most commented`];
+const commentsApi = new CommentApi(AUTHORIZATION);
 
 const renderFilms = (films, container, onDataChange, onViewChange, commentsModel) => {
   return films.map((film) => {
@@ -22,9 +25,17 @@ const renderFilms = (films, container, onDataChange, onViewChange, commentsModel
   });
 };
 
+const getComment = (id, commentsModel) => {
+  commentsApi.getComments(id)
+  .then((comments) => {
+    commentsModel.setComment(comments);
+  });
+};
+
+
 const renderComments = (films, commentsModel) => {
   films.forEach((film) => {
-    commentsModel.setComment(film.comments);
+    getComment(film.id, commentsModel);
   });
   return commentsModel;
 };
@@ -49,31 +60,31 @@ const getSortedFilms = (allFilms, sortType, from, to) => {
   return sortedFilms.slice(from, to);
 };
 
-const renderExtraCard = (container, allFilms) => {
-  const top = allFilms.slice().sort((a, b) => b.rating - a.rating);
-  const mostComents = allFilms.slice().sort((a, b) => b.comments - a.comments);
-  top.slice(0, 2).forEach(() => {
-    render(container, new FilmsListExtraComponent(), RenderPosition.BEFOREEND);
-  });
+// const renderExtraCard = (container, allFilms) => {
+//   const top = allFilms.slice().sort((a, b) => b.rating - a.rating);
+//   const mostComents = allFilms.slice().sort((a, b) => b.comments - a.comments);
+//   top.slice(0, 2).forEach(() => {
+//     render(container, new FilmsListExtraComponent(), RenderPosition.BEFOREEND);
+//   });
 
-  const filmsListExtra = container.querySelectorAll(`.films-list--extra`);
+//   const filmsListExtra = container.querySelectorAll(`.films-list--extra`);
 
-  [...filmsListExtra].forEach((element, i) => {
-    element.querySelector(`.films-list__title`).textContent = EXTRA_TITLES[i];
-  });
+//   [...filmsListExtra].forEach((element, i) => {
+//     element.querySelector(`.films-list__title`).textContent = EXTRA_TITLES[i];
+//   });
 
-  top.slice(0, 2).forEach((it) => {
-    const extraContainer = filmsListExtra[0].querySelector(`.films-list__container`);
-    new MovieController(extraContainer).render(it);
-  });
+//   top.slice(0, 2).forEach((it) => {
+//     const extraContainer = filmsListExtra[0].querySelector(`.films-list__container`);
+//     new MovieController(extraContainer).render(it);
+//   });
 
-  mostComents.slice(0, 2).forEach((it) => {
-    const extraContainer = filmsListExtra[1].querySelector(`.films-list__container`);
-    new MovieController(extraContainer).render(it);
-  });
-  const filmListElement = container.querySelector(`.films .films-list`);
-  render(filmListElement, RenderPosition.BEFOREEND);
-};
+//   mostComents.slice(0, 2).forEach((it) => {
+//     const extraContainer = filmsListExtra[1].querySelector(`.films-list__container`);
+//     new MovieController(extraContainer).render(it);
+//   });
+//   const filmListElement = container.querySelector(`.films .films-list`);
+//   render(filmListElement, RenderPosition.BEFOREEND);
+// };
 
 
 export default class PageController {
@@ -104,7 +115,7 @@ export default class PageController {
     this._renderMovies(movies.slice(0, this._showingFilmsCount));
     this._renderShowMoreButton();
 
-    renderExtraCard(this._container.getElement(), movies);
+    // renderExtraCard(this._container.getElement(), movies);
   }
 
   _removeMovies() {

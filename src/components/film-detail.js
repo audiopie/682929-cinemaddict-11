@@ -7,7 +7,7 @@ const createCommentsTemplate = (author, text, emoji, dayCommented, commentId) =>
   return (
     `<li class="film-details__comment">
     <span class="film-details__comment-emoji">
-      <img src="./images/emoji/${emoji}" width="55" height="55" alt="emoji-smile">
+      <img src="./images/emoji/${COMMENT_EMOJI[emoji]}" width="55" height="55" alt="emoji-smile">
     </span>
     <div>
       <p class="film-details__comment-text"> ${text}</p>
@@ -22,10 +22,10 @@ const createCommentsTemplate = (author, text, emoji, dayCommented, commentId) =>
 };
 
 
-const filmDetailTemplate = (film, emoji) => {
+const filmDetailTemplate = (film, emoji, comments) => {
   const {title, writers, rating, alternativeTitle, runtime, releaseCountry, actors, ageRating, dataRelease, director, genre, poster, description, isWatchList, isWatched, isFavorite} = film;
   const emojiMarkup = emoji ? `<img src ="./images/emoji/${emoji}" alt="" width="55" height="55">` : ``;
-  const commentsMarkup = film.comments.map((comment) => createCommentsTemplate(comment.author, comment.text, comment.emoji, comment.dayCommented, comment.id)).join(`\n`);
+  const commentsMarkup = comments.map((comment) => createCommentsTemplate(comment.author, comment.comment, comment.emotion, comment.date, comment.id)).join(`\n`);
   return (
     `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
@@ -151,10 +151,10 @@ const filmDetailTemplate = (film, emoji) => {
 };
 
 export default class FilmDetail extends AbstractSmartComponent {
-  constructor(film) {
+  constructor(film, comments) {
     super();
     this._film = film;
-    this._comments = film.comments;
+    this._comments = comments;
     this._closeButtonHandler = null;
     this._setWatchListDetailHandler = null;
     this._setWatchedDetailHandler = null;

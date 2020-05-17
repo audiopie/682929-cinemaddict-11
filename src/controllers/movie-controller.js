@@ -15,6 +15,7 @@ export default class MovieController {
     this._commentsModel = commentsModel;
     this._cardComponent = null;
     this._filmDetailComponent = null;
+    this._filmComments = [];
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._resetForm = this._resetForm.bind(this);
   }
@@ -45,13 +46,23 @@ export default class MovieController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
+  getCommentsFromModel(comment) {
+    return this._commentsModel.getComment(comment);
+  }
+
 
   render(film) {
     const oldFilmComponent = this._cardComponent;
     const oldDetailComponent = this._filmDetailComponent;
 
+    film.comments.forEach((comment) => {
+      const currentComment = this.getCommentsFromModel(comment);
+      this._filmComments.push(currentComment);
+    });
+
+
     this._cardComponent = new CardComponent(film);
-    this._filmDetailComponent = new FilmDetailComponent(film);
+    this._filmDetailComponent = new FilmDetailComponent(film, this._filmComments);
 
     if (oldFilmComponent && oldDetailComponent) {
       replace(this._cardComponent, oldFilmComponent);
