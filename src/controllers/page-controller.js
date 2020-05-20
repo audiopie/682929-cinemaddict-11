@@ -19,7 +19,7 @@ const renderFilms = (films, container, onDataChange, onViewChange) => {
     const commentsModel = new CommentsModel();
     commentsApi.getComments(film.id)
     .then((comment) => {
-      return commentsModel.setComment(comment);
+      commentsModel.setComment(comment);
     });
 
     const filmController = new MovieController(container, onDataChange, onViewChange, commentsModel);

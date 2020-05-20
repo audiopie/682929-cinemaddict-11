@@ -1,7 +1,7 @@
 import CardComponent from "../components/film-card.js";
 import FilmDetailComponent from "../components/film-detail.js";
-import CommentsComponent from "../components/comments-list.js";
 
+import CommentsController from "../controllers/comments-controller.js";
 
 import {render, replace, remove, RenderPosition} from "../utils/render.js";
 
@@ -16,23 +16,18 @@ export default class MovieController {
     this._commentsModel = commentsModel;
     this._cardComponent = null;
     this._filmDetailComponent = null;
-    this._commentsComponent = null;
-    this._filmComments = [];
+    this._commentsController = null;
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     // this._resetForm = this._resetForm.bind(this);
   }
 
   _openPopup() {
     this._onViewChange();
-    this._commentsComponent = new CommentsComponent(this._commentsModel);
     bodyElement.appendChild(this._filmDetailComponent.getElement());
-    const element = this._filmDetailComponent.getElement().querySelector(`.form-details__bottom-container`);
-    element.appendChild(this._commentsComponent.getElement());
   }
 
   setDefaultView() {
     this._filmDetailComponent.getElement().remove();
-    // console.log(this._commentsComponent);
   }
 
   _onEscKeyDown(evt) {
@@ -52,9 +47,9 @@ export default class MovieController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
-  getCommentsFromModel(comment) {
-    return this._commentsModel.getComment(comment);
-  }
+  // getCommentsFromModel(comment) {
+  //   return this._commentsModel.getComment(comment);
+  // }
 
 
   render(film) {
@@ -63,6 +58,9 @@ export default class MovieController {
 
     this._cardComponent = new CardComponent(film);
     this._filmDetailComponent = new FilmDetailComponent(film);
+    this._commentsController = new CommentsController(this._filmDetailComponent.getElement(), film);
+    console.log(this._commentsModel);
+    this._commentsController.render(this._commentsModel.getComments());
 
     if (oldFilmComponent && oldDetailComponent) {
       replace(this._cardComponent, oldFilmComponent);
@@ -119,6 +117,7 @@ export default class MovieController {
 
     this._filmDetailComponent.onCloseButtonHandler(() => {
       // this._resetForm();
+      // remove(this._commentsComponent);
       this.setDefaultView();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     });

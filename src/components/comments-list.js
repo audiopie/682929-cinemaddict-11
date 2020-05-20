@@ -23,12 +23,14 @@ const createCommentsTemplate = (author, text, emotion, date, id) => {
 const createComments = (comments) => {
   const commentsMarkup = comments.map((comment) => createCommentsTemplate(comment.author, comment.comment, comment.emotion, comment.date, comment.id)).join(`\n`);
   return (
-    `<section class="film-details__comments-wrap">
+    `<div class="form-details__bottom-container">
+    <section class="film-details__comments-wrap">
       <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
       <ul class="film-details__comments-list">
         ${commentsMarkup}
         </ul>
-      </section>`
+      </section>
+      </div>`
   );
 };
 
@@ -36,7 +38,7 @@ const createComments = (comments) => {
 export default class Comments extends AbstractSmartComponent {
   constructor(commentsModel) {
     super();
-    this._comments = commentsModel.getComments();
+    this._comments = commentsModel;
     this._deleteCommentButtonHandler = null;
     this._setCommentHandler = null;
     this._getNewComment = null;
