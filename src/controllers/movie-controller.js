@@ -47,20 +47,21 @@ export default class MovieController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
-  // getCommentsFromModel(comment) {
-  //   return this._commentsModel.getComment(comment);
-  // }
-
 
   render(film) {
     const oldFilmComponent = this._cardComponent;
     const oldDetailComponent = this._filmDetailComponent;
 
+
+    if (this._commentsController) {
+      this._commentsController.destroy();
+    }
+
     this._cardComponent = new CardComponent(film);
     this._filmDetailComponent = new FilmDetailComponent(film);
-    this._commentsController = new CommentsController(this._filmDetailComponent.getElement(), film);
-    console.log(this._commentsModel);
-    this._commentsController.render(this._commentsModel.getComments());
+
+    this._commentsController = new CommentsController(this._filmDetailComponent.getElement(), film, this._commentsModel);
+    this._commentsController.render();
 
     if (oldFilmComponent && oldDetailComponent) {
       replace(this._cardComponent, oldFilmComponent);
@@ -117,7 +118,6 @@ export default class MovieController {
 
     this._filmDetailComponent.onCloseButtonHandler(() => {
       // this._resetForm();
-      // remove(this._commentsComponent);
       this.setDefaultView();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     });

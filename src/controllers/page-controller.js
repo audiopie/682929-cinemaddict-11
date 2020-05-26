@@ -1,4 +1,3 @@
-import CommentApi from "../api-comments.js";
 import SortComponent, {SortType} from "../components/sort.js";
 import ShowMoreButtonComponent from "../components/show-more-button.js";
 // import FilmsListExtraComponent from "../components/films-extra.js";
@@ -7,25 +6,16 @@ import CommentsModel from "../models/comments.js";
 
 import {render, remove, RenderPosition} from "../utils/render.js";
 
-const AUTHORIZATION = `Basic dxkl29whjdy7zwa=`;
-
 const SHOWING_CARD_COUNT_ON_START = 5;
 const SHOWING_CARD_COUNT_BY_BUTTON = 5;
 // const EXTRA_TITLES = [`Top rated`, `Most commented`];
-const commentsApi = new CommentApi(AUTHORIZATION);
+
 
 const renderFilms = (films, container, onDataChange, onViewChange) => {
   return films.map((film) => {
     const commentsModel = new CommentsModel();
-    commentsApi.getComments(film.id)
-    .then((comment) => {
-      commentsModel.setComment(comment);
-    });
-
     const filmController = new MovieController(container, onDataChange, onViewChange, commentsModel);
-
     filmController.render(film);
-
     return filmController;
   });
 };
@@ -102,7 +92,6 @@ export default class PageController {
     render(this._container.getElement(), this._sortComponent, RenderPosition.AFTERBEGIN);
     this._renderMovies(movies.slice(0, this._showingFilmsCount));
     this._renderShowMoreButton();
-
     // renderExtraCard(this._container.getElement(), movies);
   }
 

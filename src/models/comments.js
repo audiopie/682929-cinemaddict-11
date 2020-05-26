@@ -19,7 +19,7 @@ export default class Comments {
 
 
   setComment(comment) {
-    this._comments = [].concat(comment, this._comments);
+    this._comments = [].concat(comment);
     this._callHandlers(this._dataChangeHandlers);
   }
 
