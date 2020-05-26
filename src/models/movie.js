@@ -21,6 +21,29 @@ export default class Movie {
     this.comments = data[`comments`];
   }
 
+  toRAW() {
+    return {
+      "id": this.id,
+      "title": this.title,
+      "alternative_title": this.alternativeTitle,
+      "description": this.description,
+      "actors": this.actors,
+      "age_rating": this.ageRating,
+      "director": this.director,
+      "genre": this.genre,
+      "poster": this.poster,
+      "date": this.dateRelease,
+      "runtime": this.runtime,
+      "total_rating": this.total_rating,
+      "writers": this.writers,
+      "already_watched": this.isWatched,
+      "favorite": this.isFavorite,
+      "watching_date": this.watchingDate,
+      "watchlist": this.isWatchlist,
+      "comments": this.comments,
+    };
+  }
+
   static parseMovie(data) {
     return new Movie(data);
   }

@@ -1,35 +1,8 @@
-import {MONTHS, PROFILE_RATING} from "./mock/const.js";
+import {PROFILE_RATING} from "./mock/const.js";
 
 
 export const getRandom = (min, max) => {
   return Math.round(Math.random() * (max - min) + min);
-};
-
-export const getRandomRating = (min, max) => {
-  return ((Math.random() * (max - min)) + min).toFixed(1);
-};
-
-export const getItemFromArray = (array) => {
-  return getRandom(0, array.length - 1);
-};
-
-export const getRandomDate = {
-  beginDate: new Date(1895, 0, 1),
-  nowDate: new Date(),
-  getReleaseYear() {
-    return getRandom(this.beginDate.getFullYear(), this.nowDate.getFullYear());
-  },
-  getReleaseMonth() {
-    return getItemFromArray(MONTHS);
-  },
-  getReleaseDate() {
-    return getRandom(this.nowDate.getDate(), this.nowDate.getDate());
-  },
-  getDurationTime() {
-    const durationHour = Math.ceil(Math.random() * this.nowDate.getHours());
-    const durationTime = Math.ceil(Math.random() * this.nowDate.getMinutes());
-    return `${durationHour}h ${durationTime}m`;
-  },
 };
 
 const FILTER_NAMES = [`All movies`, `Watchlist`, `History`, `Favorites`];

@@ -4,6 +4,7 @@ import ShowMoreButtonComponent from "../components/show-more-button.js";
 import MovieController from "./movie-controller.js";
 import CommentsModel from "../models/comments.js";
 
+import {formatYear} from "../utils/common.js";
 import {render, remove, RenderPosition} from "../utils/render.js";
 
 const SHOWING_CARD_COUNT_ON_START = 5;
@@ -27,7 +28,7 @@ const getSortedFilms = (allFilms, sortType, from, to) => {
 
   switch (sortType) {
     case SortType.DATE_UP:
-      sortedFilms = showingFilms.sort((a, b) => b.filmPublicationDate - a.filmPublicationDate);
+      sortedFilms = showingFilms.sort((a, b) => formatYear(b.dateRelease) - formatYear(a.dateRelease));
       break;
     case SortType.RATE:
       sortedFilms = showingFilms.sort((a, b) => b.rating - a.rating);

@@ -1,7 +1,11 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
 
+import {formatYear, formatRuntime} from "../utils/common.js";
+
 const filmDetailTemplate = (film) => {
-  const {title, writers, rating, alternativeTitle, runtime, releaseCountry, actors, ageRating, dataRelease, director, genre, poster, description, isWatchList, isWatched, isFavorite} = film;
+  const {title, writers, rating, alternativeTitle, releaseCountry, actors, ageRating, director, genre, poster, description, isWatchList, isWatched, isFavorite} = film;
+  const release = formatYear(film.dateRelease);
+  const time = formatRuntime(film.runtime);
   return (
     `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
@@ -43,18 +47,18 @@ const filmDetailTemplate = (film) => {
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Release Date</td>
-                <td class="film-details__cell">${dataRelease}</td>
+                <td class="film-details__cell">${release}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Runtime</td>
-                <td class="film-details__cell">${runtime}</td>
+                <td class="film-details__cell">${time}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Country</td>
                 <td class="film-details__cell">${releaseCountry}</td>
               </tr>
               <tr class="film-details__row">
-                <td class="film-details__term">${genre.length <= 1 ? `Genres` : `Genre`}</td>
+                <td class="film-details__term">${genre.length > 1 ? `Genres` : `Genre`}</td>
                 <td class="film-details__cell">
                   <span class="film-details__genre">${genre}</span>
 
