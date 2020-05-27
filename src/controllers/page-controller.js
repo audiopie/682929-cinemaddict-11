@@ -69,9 +69,10 @@ const getSortedFilms = (allFilms, sortType, from, to) => {
 
 
 export default class PageController {
-  constructor(container, moviesModel) {
+  constructor(container, moviesModel, api) {
     this._container = container;
     this._moviesModel = moviesModel;
+    this._api = api;
     this._showedFilmControllers = [];
     this._showingFilmsCount = SHOWING_CARD_COUNT_ON_START;
     this._showingCardCount = null;
@@ -146,10 +147,14 @@ export default class PageController {
   }
 
   _onDataChange(filmController, oldData, newData) {
-    const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
-    if (isSuccess) {
-      filmController.render(newData);
-    }
+    this._api.updateMovie(oldData.id, newData)
+      .then((movieModel) => {
+        const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
+        if (isSuccess) {
+          filmController.render(movieModel);
+          this._updateMovies(this._showingCardCount);
+        }
+      });
   }
 
   _onViewChange() {

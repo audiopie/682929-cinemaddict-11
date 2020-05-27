@@ -1,8 +1,10 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
 import {COMMENT_EMOJI} from "../mock/const";
 
+import {formatCommentDate} from "../utils/common.js";
 
 const createCommentsTemplate = (author, text, emotion, date, id) => {
+  const commentDate = formatCommentDate(date);
   return (
     `<li class="film-details__comment">
     <span class="film-details__comment-emoji">
@@ -12,7 +14,7 @@ const createCommentsTemplate = (author, text, emotion, date, id) => {
       <p class="film-details__comment-text"> ${text}</p>
       <p class="film-details__comment-info">
         <span class="film-details__comment-author">${author}</span>
-        <span class="film-details__comment-day">${date}</span>
+        <span class="film-details__comment-day">${commentDate}</span>
         <button class="film-details__comment-delete" data-comment-id="${id}">Delete</button>
       </p>
     </div>
@@ -40,14 +42,10 @@ export default class Comments extends AbstractSmartComponent {
     super();
     this._comments = commentsModel;
     this._deleteCommentButtonHandler = null;
-    this._setCommentHandler = null;
-    this._getNewComment = null;
   }
 
   recoveryListeners() {
     this.deleteCommentButtonHandler(this._deleteCommentButtonHandler);
-    this.setCommentHandler(this._setCommentHandler);
-    this._subscribeOnEvents();
   }
 
   getTemplate() {
@@ -66,20 +64,5 @@ export default class Comments extends AbstractSmartComponent {
     });
   }
 
-  setCommentHandler(handler) {
-    this.getElement().querySelector(`.film-details__comment-input`)
-    .addEventListener(`keydown`, handler);
-    this._setCommentHandler = handler;
-  }
-
-  getNewComment(newComment) {
-    return {
-      author: `Some`,
-      text: newComment,
-      emoji: this._emoji,
-      dayCommented: `today`,
-      id: new Date().getSeconds() + Math.random(),
-    };
-  }
 }
 

@@ -7,3 +7,8 @@ export const formatYear = (date) => {
 export const formatRuntime = (date) => {
   return moment().startOf(`day`).add(date, `minutes`).format(`h:mm`);
 };
+
+export const formatCommentDate = (date) => {
+  return moment(date).format(`YYYY/MM/DD, h:mm`);
+};
+

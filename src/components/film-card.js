@@ -6,7 +6,7 @@ const createFilmCardTemplate = (film) => {
   const {title, comments, rating, genre, poster, description} = film;
   const release = formatYear(film.dateRelease);
   const time = formatRuntime(film.runtime);
-  const watchListButton = createButtonMarkup(`Add to watchlist`, `add-to-watchlist`, film.isWatchList);
+  const watchListButton = createButtonMarkup(`Add to watchlist`, `add-to-watchlist`, film.isWatchlist);
   const watchedButton = createButtonMarkup(`Mark as watched`, `mark-as-watched`, film.isWatched);
   const favoriteButton = createButtonMarkup(`Mark as favorite`, `favorite`, film.isFavorite);
 

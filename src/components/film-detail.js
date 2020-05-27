@@ -3,7 +3,7 @@ import AbstractSmartComponent from "./abstract-smart-component.js";
 import {formatYear, formatRuntime} from "../utils/common.js";
 
 const filmDetailTemplate = (film) => {
-  const {title, writers, rating, alternativeTitle, releaseCountry, actors, ageRating, director, genre, poster, description, isWatchList, isWatched, isFavorite} = film;
+  const {title, writers, rating, alternativeTitle, releaseCountry, actors, ageRating, director, genre, poster, description, isWatchlist, isWatched, isFavorite} = film;
   const release = formatYear(film.dateRelease);
   const time = formatRuntime(film.runtime);
   return (
@@ -72,7 +72,7 @@ const filmDetailTemplate = (film) => {
         </div>
   
         <section class="film-details__controls">
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isWatchList ? `checked` : ``}>
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isWatchlist ? `checked` : ``}>
           <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
   
           <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isWatched ? `checked` : ``}>

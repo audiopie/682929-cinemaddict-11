@@ -4,7 +4,8 @@ import {COMMENT_EMOJI} from "../mock/const";
 const createCommentsTemplate = (emoji) => {
   const emojiMarkup = emoji ? `<img src ="./images/emoji/${emoji}" alt="" width="55" height="55">` : ``;
   return (
-    `<div for="add-emoji" class="film-details__add-emoji-label">
+    `<div class="film-details__new-comment">
+    <div for="add-emoji" class="film-details__add-emoji-label">
     ${emojiMarkup}
     <input type="hidden" name="add-emoji" value="">
     </div>
@@ -33,22 +34,24 @@ const createCommentsTemplate = (emoji) => {
       <label class="film-details__emoji-label" for="emoji-angry">
         <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
       </label>
+      </div>
     </div>`
   );
 };
 
 
-export default class Comments extends AbstractSmartComponent {
+export default class NewComments extends AbstractSmartComponent {
   constructor(film, commentsModel) {
     super();
     this._film = film;
     this._comment = commentsModel;
     this._emoji = null;
 
+    this._subscribeOnEvents();
   }
 
   recoveryListeners() {
-
+    this._subscribeOnEvents();
   }
 
   getTemplate() {

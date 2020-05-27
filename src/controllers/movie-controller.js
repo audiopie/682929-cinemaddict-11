@@ -1,5 +1,6 @@
 import CardComponent from "../components/film-card.js";
 import FilmDetailComponent from "../components/film-detail.js";
+import MovieModel from "../models/movie.js";
 
 import CommentsController from "../controllers/comments-controller.js";
 
@@ -72,37 +73,49 @@ export default class MovieController {
 
     this._cardComponent.setWatchListButtonClickHandler((event) => {
       event.preventDefault();
-      this._onDataChange(this, film, Object.assign({}, film, {isWatchList: !film.isWatchList}));
+      const newMovie = MovieModel.clone(film);
+      newMovie.isWatchlist = !newMovie.isWatchlist;
+      this._onDataChange(this, film, newMovie);
     });
 
     this._cardComponent.setWatchedButtonClickHandler((event) => {
       event.preventDefault();
-      this._onDataChange(this, film, Object.assign({}, film, {isWatched: !film.isWatched}));
+      const newMovie = MovieModel.clone(film);
+      newMovie.isWatched = !newMovie.isWatched;
+      this._onDataChange(this, film, newMovie);
     });
 
     this._cardComponent.setFavoriteButtonClickHandler((event) => {
       event.preventDefault();
-      this._onDataChange(this, film, Object.assign({}, film, {isFavorite: !film.isFavorite}));
+      const newMovie = MovieModel.clone(film);
+      newMovie.isFavorite = !newMovie.isFavorite;
+      this._onDataChange(this, film, newMovie);
     });
 
     this._filmDetailComponent.setWatchListButtonClickHandlerDetail((event) => {
       event.preventDefault();
-      this._onDataChange(this, film, Object.assign({}, film, {isWatchList: !film.isWatchList}));
+      const newMovie = MovieModel.clone(film);
+      newMovie.isWatchlist = !newMovie.isWatchlist;
+      this._onDataChange(this, film, newMovie);
     });
 
     this._filmDetailComponent.setWatchedButtonClickHandlerDetail((event) => {
       event.preventDefault();
-      this._onDataChange(this, film, Object.assign({}, film, {isWatched: !film.isWatched}));
+      const newMovie = MovieModel.clone(film);
+      newMovie.isWatched = !newMovie.isWatched;
+      this._onDataChange(this, film, newMovie);
     });
 
     this._filmDetailComponent.setFavoriteButtonClickHandlerDetail((event) => {
       event.preventDefault();
-      this._onDataChange(this, film, Object.assign({}, film, {isFavorite: !film.isFavorite}));
+      const newMovie = MovieModel.clone(film);
+      newMovie.isFavorite = !newMovie.isFavorite;
+      this._onDataChange(this, film, newMovie);
     });
 
     // this._filmDetailComponent.deleteCommentButtonHandler((commentId) => {
     //   this._commentsModel.removeComment(commentId);
-    //   // return this._onDataChange(this, film, Object.assign({}, film, {}));
+    //   return this._onDataChange(this, film, Object.assign({}, film, {}));
     // });
 
     // this._filmDetailComponent.setCommentHandler((event) => {

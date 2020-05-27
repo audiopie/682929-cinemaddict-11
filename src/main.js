@@ -27,7 +27,7 @@ filterController.render();
 render(siteHeaderElement, new UserProfileComponent(generateProfile()), RenderPosition.BEFOREEND);
 
 const filmListComponent = new FilmListComponent();
-const pageController = new PageController(filmListComponent, moviesModel);
+const pageController = new PageController(filmListComponent, moviesModel, api);
 render(siteMainElement, filmListComponent, RenderPosition.BEFOREEND);
 render(footerStatistickElement, new FooterStatisticsComponent(), RenderPosition.BEFOREEND);
 
