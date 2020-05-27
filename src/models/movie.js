@@ -1,69 +1,67 @@
-import {getMoviesByFilter} from "../utils/filter.js";
-import {FilterTypes} from "../mock/const.js";
-
-
-export default class Movies {
-  constructor() {
-    this._movies = [];
-    this._activeFilterType = FilterTypes.ALL;
-    this._dataChangeHandlers = [];
-    this._filterChangeHandler = [];
+export default class Movie {
+  constructor(data) {
+    this.id = data[`id`];
+    this.title = data.film_info[`title`];
+    this.alternativeTitle = data.film_info[`alternative_title`];
+    this.description = data.film_info[`description`];
+    this.actors = data.film_info[`actors`];
+    this.ageRating = data.film_info[`age_rating`];
+    this.director = data.film_info[`director`];
+    this.genre = data.film_info[`genre`];
+    this.poster = data.film_info[`poster`];
+    this.dateRelease = data.film_info[`release`][`date`];
+    this.releaseCountry = data.film_info[`release`][`release_country`];
+    this.runtime = data.film_info[`runtime`];
+    this.rating = data.film_info[`total_rating`];
+    this.writers = data.film_info[`writers`];
+    this.isWatched = data.user_details[`already_watched`];
+    this.isFavorite = data.user_details[`favorite`];
+    this.watchingDate = data.user_details[`watching_date`];
+    this.isWatchlist = data.user_details[`watchlist`];
+    this.comments = data[`comments`];
   }
 
-  getMovies() {
-    return getMoviesByFilter(this._movies, this._activeFilterType);
+  toRAW() {
+    return {
+      "id": this.id,
+      "film_info": {
+        "title": this.title,
+        "alternative_title": this.alternativeTitle,
+        "description": this.description,
+        "actors": this.actors,
+        "age_rating": this.ageRating,
+        "director": this.director,
+        "genre": this.genre,
+        "poster": this.poster,
+        "release": {
+          "date": this.dateRelease,
+          "release_country": this.releaseCountry,
+        },
+        "runtime": this.runtime,
+        "total_rating": this.rating,
+        "writers": this.writers,
+      },
+      "user_details": {
+        "already_watched": this.isWatched,
+        "favorite": this.isFavorite,
+        "watching_date": this.watchingDate,
+        "watchlist": this.isWatchlist,
+      },
+      "comments": this.comments,
+    };
   }
 
-  getAllMovies() {
-    return this._movies;
+  static parseMovie(data) {
+    return new Movie(data);
   }
 
-  setFilter(filterType) {
-    this._activeFilterType = filterType;
-    this._callHandlers(this._filterChangeHandler);
+  static parseMovies(data) {
+    return data.map(Movie.parseMovie);
   }
 
-  setMovies(movies) {
-    this._movies = Array.from(movies);
-    this._callHandlers(this._dataChangeHandlers);
+  static clone(data) {
+    return new Movie(data.toRAW());
   }
 
-  updateMovie(id, movie) {
-    const index = this._movies.findIndex((it) => it.id === id);
-
-    if (index === -1) {
-      return false;
-    }
-
-    this._movies = [].concat(this._movies.slice(0, index), movie, this._movies.slice(index + 1));
-    this._callHandlers(this._dataChangeHandlers);
-
-    return true;
-  }
-
-  removeMovie(id) {
-    const index = this._movies.findIndex((it) => it.id === id);
-
-    if (index === -1) {
-      return false;
-    }
-
-    this._movies = [].concat(this._movies.slice(0, index), this._movies.slice(index + 1));
-
-    this._callHandlers(this._dataChangeHandlers);
-
-    return true;
-  }
-
-  setFilterChangeHandler(handler) {
-    this._filterChangeHandler.push(handler);
-  }
-
-  setDataChangeHandler(handler) {
-    this._dataChangeHandlers.push(handler);
-  }
-
-  _callHandlers(handlers) {
-    handlers.forEach((handler) => handler());
-  }
 }
+
