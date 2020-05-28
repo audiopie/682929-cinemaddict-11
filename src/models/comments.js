@@ -35,10 +35,6 @@ export default class Comments {
     return this._comments;
   }
 
-  addComment(comment) {
-    return (this._comments = [].concat(comment, this._comments));
-  }
-
   setDataChangeHandler(handler) {
     this._dataChangeHandlers.push(handler);
   }

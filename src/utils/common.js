@@ -12,3 +12,7 @@ export const formatCommentDate = (date) => {
   return moment(date).format(`YYYY/MM/DD, h:mm`);
 };
 
+export const formatToRawDate = (date) => {
+  return moment(date).format();
+};
+

@@ -14,6 +14,7 @@ export default class MovieController {
     this._container = container;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
+    this._onCommentChange = this._onCommentChange.bind(this);
     this._commentsModel = commentsModel;
     this._cardComponent = null;
     this._filmDetailComponent = null;
@@ -48,6 +49,9 @@ export default class MovieController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
+  _onCommentChange(film) {
+    this._onDataChange(this, film, film);
+  }
 
   render(film) {
     const oldFilmComponent = this._cardComponent;
@@ -61,7 +65,7 @@ export default class MovieController {
     this._cardComponent = new CardComponent(film);
     this._filmDetailComponent = new FilmDetailComponent(film);
 
-    this._commentsController = new CommentsController(this._filmDetailComponent.getElement(), film, this._commentsModel);
+    this._commentsController = new CommentsController(this, this._filmDetailComponent.getElement(), film, this._commentsModel, this._onCommentChange);
     this._commentsController.render();
 
     if (oldFilmComponent && oldDetailComponent) {
@@ -112,22 +116,6 @@ export default class MovieController {
       newMovie.isFavorite = !newMovie.isFavorite;
       this._onDataChange(this, film, newMovie);
     });
-
-    // this._filmDetailComponent.deleteCommentButtonHandler((commentId) => {
-    //   this._commentsModel.removeComment(commentId);
-    //   return this._onDataChange(this, film, Object.assign({}, film, {}));
-    // });
-
-    // this._filmDetailComponent.setCommentHandler((event) => {
-    //   if (event.keyCode === 13 && event.ctrlKey) {
-    //     const form = this._filmDetailComponent.getElement().querySelector(`.film-details__inner`);
-    //     const formData = new FormData(form);
-    //     const comment = formData.get(`comment`);
-    //     const newComment = this._filmDetailComponent.getNewComment(comment);
-    //     this._commentsModel.addComment(newComment);
-    //     this._onDataChange(this, film, Object.assign({}, film, {}));
-    //   }
-    // });
 
     this._filmDetailComponent.onCloseButtonHandler(() => {
       // this._resetForm();

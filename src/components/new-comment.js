@@ -1,5 +1,13 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
 import {COMMENT_EMOJI} from "../mock/const";
+import {formatToRawDate} from "../utils/common.js";
+
+const emotion = {
+  "angry.png": `angry`,
+  "puke.png": `puke`,
+  "sleeping.png": `sleeping`,
+  "smile.png": `smile`,
+};
 
 const createCommentsTemplate = (emoji) => {
   const emojiMarkup = emoji ? `<img src ="./images/emoji/${emoji}" alt="" width="55" height="55">` : ``;
@@ -46,12 +54,14 @@ export default class NewComments extends AbstractSmartComponent {
     this._film = film;
     this._comment = commentsModel;
     this._emoji = null;
+    this._setCommentHandler = null;
 
     this._subscribeOnEvents();
   }
 
   recoveryListeners() {
     this._subscribeOnEvents();
+    this.setCommentHandler(this._setCommentHandler);
   }
 
   getTemplate() {
@@ -66,11 +76,12 @@ export default class NewComments extends AbstractSmartComponent {
 
 
   getNewComment(newComment) {
+    const date = new Date();
     return {
       author: `Some`,
       text: newComment,
-      emoji: this._emoji,
-      dayCommented: `today`,
+      emoji: emotion[this._emoji],
+      dayCommented: formatToRawDate(date),
       id: new Date().getSeconds() + Math.random(),
     };
   }
